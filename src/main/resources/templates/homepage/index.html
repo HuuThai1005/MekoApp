@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>MEKO Delta Spirit</title>
+
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        MEKO
+    </div>
+
+    <nav>
+        <a href="#">Khám phá</a>
+        <a href="#">Câu chuyện</a>
+        <a href="#">Passport</a>
+        <a href="#">Shop</a>
+    </nav>
+
+</header>
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>MEKO DELTA SPIRIT</h1>
+
+        <p>
+            Mỗi món quà là một cánh cửa dẫn đến
+            những câu chuyện văn hóa của Đồng bằng
+            sông Cửu Long.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="/stories" class="btn-primary">
+                Khám phá ngay
+            </a>
+
+            <a href="/scan" class="btn-secondary">
+                Quét QR
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="cultures">
+
+    <h2>4 Nền Văn Hóa Đặc Trưng</h2>
+
+    <div class="culture-grid">
+
+        <div class="culture-card kinh">
+            <h3>Kinh</h3>
+            <p>Đờn ca tài tử • Khăn rằn</p>
+        </div>
+
+        <div class="culture-card khmer">
+            <h3>Khmer</h3>
+            <p>Ok Om Bok • Chùa Dơi</p>
+        </div>
+
+        <div class="culture-card hoa">
+            <h3>Hoa</h3>
+            <p>Bánh Pía • Miếu cổ</p>
+        </div>
+
+        <div class="culture-card cham">
+            <h3>Chăm</h3>
+            <p>Thổ cẩm • Ramadan</p>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="stories">
+
+    <h2>Câu Chuyện Nổi Bật</h2>
+
+    <div class="story-grid">
+
+        <div class="story-card"
+             th:each="story : ${featuredStories}">
+
+            <img th:src="${story.coverImage}"
+                 alt="story image">
+
+            <div class="story-content">
+
+                <h3 th:text="${story.title}"></h3>
+
+                <p th:text="${story.summary}"></p>
+
+                <a th:href="@{/stories/{id}(id=${story.id})}">
+                    Xem thêm →
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="passport-section">
+
+    <h2>Cultural Passport</h2>
+
+    <p>
+        Thu thập dấu mộc từ mỗi câu chuyện,
+        mở khóa danh hiệu và phần thưởng.
+    </p>
+
+    <div class="passport-flow">
+
+        <div>📍 Khám phá</div>
+
+        <div>➡</div>
+
+        <div>🏅 Nhận dấu</div>
+
+        <div>➡</div>
+
+        <div>🎁 Đổi thưởng</div>
+
+    </div>
+
+</section>
+
+<section class="shop-preview">
+
+    <h2>Souvenir Collection</h2>
+
+    <div class="product-grid">
+
+        <div class="product-card">
+
+            <img src="/images/bookmark.png">
+
+            <h3>Bookmark Khmer</h3>
+
+        </div>
+
+        <div class="product-card">
+
+            <img src="/images/magnet.png">
+
+            <h3>Fridge Magnet</h3>
+
+        </div>
+
+        <div class="product-card">
+
+            <img src="/images/keychain.png">
+
+            <h3>Xuồng Ba Lá</h3>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+
+    <h3>MEKO DELTA SPIRIT</h3>
+
+    <p>
+        Digital Storytelling & Cultural Souvenir
+    </p>
+
+</footer>
+
+</body>
+</html>
