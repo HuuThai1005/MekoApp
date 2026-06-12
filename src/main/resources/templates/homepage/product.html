@@ -22,12 +22,14 @@
     MEKO
   </div>
 
-  <nav>
-    <a href="#">Khám phá</a>
-    <a href="#">Câu chuyện</a>
-    <a th:href="@{/voucher}">Voucher</a>
-    <a href="#">Shop</a>
-  </nav>
+    <nav>
+        <a th:href="@{/}">Trang chủ</a>
+        <a href="#">Khám phá</a>
+        <a href="#">Câu chuyện</a>
+        <a th:href="@{/voucher}">Voucher</a>
+        <a th:href="@{/category}">Cate</a>
+        <a th:href="@{/product}">Product</a>
+    </nav>
   <div class="user-menu">
 
     <button class="user-btn">
@@ -80,7 +82,7 @@
       <td th:text="${product.price}"></td>
       <td th:text="${product.stock}"></td>
       <td th:text="${product.status}"></td>
-      <td th:text="${product.createAt}"></td>
+      <td th:text="${product.createdAt}"></td>
     </tr>
     </tbody>
 
