@@ -19,8 +19,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(
-            RegisterRequest request) {
+    public String register(RegisterRequest request) {
+
+        System.out.println("REGISTER CALLED");
 
         authService.register(request);
 
