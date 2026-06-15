@@ -29,7 +29,10 @@
         <a th:href="@{/category}">Cate</a>
         <a th:href="@{/product}">Product</a>
     </nav>
-    <div class="user-menu">
+    <div th:if="${username == null}" class="user-menu">
+        <a th:href="@{/login}">Login</a>
+    </div>
+    <div th:if="${username != null}" class="user-menu">
 
         <button class="user-btn">
             Hi, <span th:text="${username}"></span>
@@ -70,15 +73,9 @@
         </p>
 
         <div class="hero-buttons">
-
             <a href="/stories" class="btn-primary">
                 Khám phá ngay
             </a>
-
-            <a href="/scan" class="btn-secondary">
-                Quét QR
-            </a>
-
         </div>
 
     </div>
@@ -87,28 +84,38 @@
 
 <section class="cultures">
 
-    <h2>4 Nền Văn Hóa Đặc Trưng</h2>
+    <div class="section-title">
+        <span>Khám phá bản sắc</span>
+        <h2>4 Nền Văn Hóa Đặc Trưng</h2>
+        <p>
+            Những mảnh ghép tạo nên sự đa dạng văn hóa của Đồng bằng sông Cửu Long.
+        </p>
+    </div>
 
     <div class="culture-grid">
 
-        <div class="culture-card kinh">
+        <div class="culture-card">
+            <div class="culture-icon">🎵</div>
             <h3>Kinh</h3>
-            <p>Đờn ca tài tử • Khăn rằn</p>
+            <p>Đờn ca tài tử • Khăn rằn • Chợ nổi</p>
         </div>
 
-        <div class="culture-card khmer">
+        <div class="culture-card">
+            <div class="culture-icon">🏯</div>
             <h3>Khmer</h3>
-            <p>Ok Om Bok • Chùa Dơi</p>
+            <p>Ok Om Bok • Chùa Khmer • Nghệ thuật kiến trúc</p>
         </div>
 
-        <div class="culture-card hoa">
+        <div class="culture-card">
+            <div class="culture-icon">🏮</div>
             <h3>Hoa</h3>
-            <p>Bánh Pía • Miếu cổ</p>
+            <p>Bánh Pía • Hội quán • Văn hóa thương hồ</p>
         </div>
 
-        <div class="culture-card cham">
+        <div class="culture-card">
+            <div class="culture-icon">🕌</div>
             <h3>Chăm</h3>
-            <p>Thổ cẩm • Ramadan</p>
+            <p>Thổ cẩm • Ramadan • Nghệ thuật truyền thống</p>
         </div>
 
     </div>
@@ -117,7 +124,13 @@
 
 <section class="stories">
 
-    <h2>Câu Chuyện Nổi Bật</h2>
+    <div class="section-title">
+        <span>Storytelling</span>
+        <h2>Câu Chuyện Nổi Bật</h2>
+        <p>
+            Mỗi món quà lưu niệm là một hành trình khám phá văn hóa miền Tây.
+        </p>
+    </div>
 
     <div class="story-grid">
 
@@ -127,14 +140,19 @@
             <img th:src="${story.coverImage}"
                  alt="story image">
 
-            <div class="story-content">
+            <div class="story-overlay">
+
+                <span class="story-tag">
+                    Văn hóa Mekong
+                </span>
 
                 <h3 th:text="${story.title}"></h3>
 
                 <p th:text="${story.summary}"></p>
 
-                <a th:href="@{/stories/{id}(id=${story.id})}">
-                    Xem thêm →
+                <a class="story-btn"
+                   th:href="@{/stories/{id}(id=${story.id})}">
+                    Khám phá câu chuyện →
                 </a>
 
             </div>
@@ -144,32 +162,6 @@
     </div>
 
 </section>
-
-<section class="passport-section">
-
-    <h2>Cultural Passport</h2>
-
-    <p>
-        Thu thập dấu mộc từ mỗi câu chuyện,
-        mở khóa danh hiệu và phần thưởng.
-    </p>
-
-    <div class="passport-flow">
-
-        <div>📍 Khám phá</div>
-
-        <div>➡</div>
-
-        <div>🏅 Nhận dấu</div>
-
-        <div>➡</div>
-
-        <div>🎁 Đổi thưởng</div>
-
-    </div>
-
-</section>
-
 <section class="shop-preview">
 
     <h2>Souvenir Collection</h2>
@@ -178,7 +170,7 @@
 
         <div class="product-card">
 
-            <img src="/images/bookmark.png">
+            <img src="/asset/chua_khmer.jpg">
 
             <h3>Bookmark Khmer</h3>
 
@@ -186,7 +178,7 @@
 
         <div class="product-card">
 
-            <img src="/images/magnet.png">
+            <img src="/asset/cau_can_tho.jpg">
 
             <h3>Fridge Magnet</h3>
 
@@ -194,7 +186,7 @@
 
         <div class="product-card">
 
-            <img src="/images/keychain.png">
+            <img src="/asset/cho_noi_cai_rang.jpg">
 
             <h3>Xuồng Ba Lá</h3>
 

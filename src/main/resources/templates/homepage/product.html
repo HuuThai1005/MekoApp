@@ -57,36 +57,40 @@
   </div>
 
 </header>
-<h2>Danh sách Product</h2>
+<h2>Danh sách sản phẩm</h2>
 
-<div class="container">
-  <table class="table table-striped-columns">
+<div class="product-grid">
 
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Price</th>
-      <th>Stock</th>
-      <th>Status</th>
-      <th>CreateAt</th>
-    </tr>
-    </thead>
+    <div class="product-card"
+         th:each="product : ${products}">
 
-    <tbody>
-    <tr th:each="product : ${products}">
-      <td th:text="${product.id}"></td>
-      <td th:text="${product.productName}"></td>
-      <td th:text="${product.description}"></td>
-      <td th:text="${product.price}"></td>
-      <td th:text="${product.stock}"></td>
-      <td th:text="${product.status}"></td>
-      <td th:text="${product.createdAt}"></td>
-    </tr>
-    </tbody>
+        <img th:src="${product.imageUrl}"
+             alt="product">
 
-  </table>
+        <div class="product-content">
+
+            <h3 th:text="${product.productName}"></h3>
+
+            <p th:text="${product.description}"></p>
+
+            <p>
+                Giá:
+                <strong th:text="${product.price} + ' VNĐ'"></strong>
+            </p>
+
+            <p>
+                Danh mục:
+                <span th:text="${product.category.categoryName}"></span>
+            </p>
+
+            <button class="btn-buy">
+                Thêm vào giỏ hàng
+            </button>
+
+        </div>
+
+    </div>
+
 </div>
 
 <footer>

@@ -13,10 +13,11 @@ public class GlobalController {
             Authentication authentication,
             Model model){
 
-        if(authentication != null){
-            model.addAttribute(
-                    "username",
-                    authentication.getName());
+        if (authentication != null
+                && authentication.isAuthenticated()
+                && !"anonymousUser".equals(authentication.getName())) {
+
+            model.addAttribute("username", authentication.getName());
         }
     }
 }
