@@ -782,3 +782,55 @@ footer{
 
     font-size:15px;
 }
+.action-buttons{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+    margin-top:30px;
+}
+
+.save-btn,
+.cancel-btn{
+    min-width:180px;
+    padding:12px 24px;
+
+    border-radius:12px;
+
+    font-size:15px;
+    font-weight:600;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+/* Save */
+
+.save-btn{
+    border:none;
+    background:#009688;
+    color:white;
+}
+
+.save-btn:hover{
+    background:#00796b;
+}
+
+/* Cancel */
+
+.cancel-btn{
+    background:#f1f3f5;
+    color:#333;
+    text-decoration:none;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.cancel-btn:hover{
+    background:#dee2e6;
+}

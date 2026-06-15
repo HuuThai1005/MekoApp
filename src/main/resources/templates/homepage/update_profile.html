@@ -60,6 +60,7 @@
 
       <img src="/asset/avatar_mac_dinh.jpg"
            alt="Avatar">
+        <h2 th:text="${username}"></h2>
 
     </div>
 
@@ -97,10 +98,18 @@
                      name="phone"
                      th:value="${user.phone}">
             </div>
+              <div class="action-buttons">
+                  <button type="submit" class="btn btn-success save-btn">
+                      Save
+                  </button>
+                  <a th:href="@{/profile}"
+                     class="cancel-btn">
+                      Cancel
+                  </a>
+              </div>
 
-            <button type="submit" class="btn btn-success">
-              Save
-            </button>
+
+
 
             <input type="hidden"
                    th:name="${_csrf.parameterName}"
