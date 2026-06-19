@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>MEKO</title>
+
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/voucher.css}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+<section class="">
+
+    <!-- Tiêu đề -->
+    <div class="page-header">
+        <h2>Quản lý Voucher</h2>
+        <a th:href="@{/dashboard}" class="btn-back">
+            ← Dashboard
+        </a>
+    </div>
+
+    <!-- Nút thêm voucher -->
+    <div class="action-bar">
+        <a th:href="@{/voucher/create-voucher}" class="btn-add">
+            + Tạo thêm Voucher
+        </a>
+    </div>
+    <br>
+
+    <!-- Bảng danh sách voucher -->
+    <div class="table-wrapper">
+
+        <table class="voucher-table">
+
+            <thead>
+            <tr>
+                <th>Code</th>
+                <th>Tên Voucher</th>
+                <th>Giảm giá</th>
+                <th>Số lượng</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:each="voucher : ${vouchers}">
+
+                <!-- Code -->
+                <td th:text="${voucher.voucherCode}"></td>
+
+                <!-- Tên -->
+                <td th:text="${voucher.voucherName}"></td>
+
+                <!-- Giảm giá -->
+                <td>
+
+                    <!-- Phần trăm -->
+                    <span th:if="${voucher.discountType == 'PERCENT'}"
+                          th:text="${#numbers.formatDecimal(voucher.value,0,0) + '%'}">
+                    </span>
+
+                    <!-- Tiền mặt -->
+                    <span th:if="${voucher.discountType == 'FIXED'}"
+                          th:text="${#numbers.formatDecimal(voucher.value/1000,0,0) + 'K'}">
+                    </span>
+
+                </td>
+
+                <!-- Số lượng -->
+                <td th:text="${voucher.amount}"></td>
+
+                <!-- Trạng thái -->
+                <td>
+                    <span class="badge-active"
+                          th:text="${voucher.status}">
+                    </span>
+                </td>
+
+                <!-- Hành động -->
+                <td>
+
+                    <a th:href="@{/voucher/edit/{id}(id=${voucher.id})}"
+                       class="btn-edit">
+                        ✏
+                    </a>
+
+                    <!-- Delete Button -->
+                    <a href="#"
+                       class="btn-delete"
+                       th:attr="data-url=@{/voucher/delete/{id}(id=${voucher.id})}"
+                       onclick="openDeleteModal(this)">
+
+                        🗑
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+<!-- Delete Modal -->
+<div id="deleteModal" class="modal-overlay">
+
+    <div class="modal-box">
+
+        <div class="modal-icon">
+            ⚠️
+        </div>
+
+        <h3>Xác nhận xóa</h3>
+
+        <p>
+            Bạn có chắc muốn xóa voucher này không?
+        </p>
+
+        <div class="modal-actions">
+
+            <button class="btn-cancel-modal"
+                    onclick="closeDeleteModal()">
+
+                Hủy
+
+            </button>
+
+            <a id="confirmDeleteBtn"
+               href="#"
+               class="btn-confirm-delete">
+
+                Xóa
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+<script>
+
+    function openDeleteModal(button) {
+
+        const url = button.getAttribute("data-url");
+
+        document
+            .getElementById("confirmDeleteBtn")
+            .setAttribute("href", url);
+
+        document
+            .getElementById("deleteModal")
+            .classList.add("show");
+
+    }
+
+    function closeDeleteModal() {
+
+        document
+            .getElementById("deleteModal")
+            .classList.remove("show");
+
+    }
+
+    window.onclick = function(event) {
+
+        const modal =
+            document.getElementById("deleteModal");
+
+        if (event.target === modal) {
+
+            closeDeleteModal();
+
+        }
+
+    }
+
+</script>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>MEKO</title>
+
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <section class="">
+
+        <!-- Header -->
+        <div class="page-header">
+
+            <h2>Chỉnh sửa Voucher</h2>
+
+            <a th:href="@{/voucher}"
+               class="btn-back">
+
+                ← Quay lại
+
+            </a>
+
+        </div>
+
+        <!-- Form -->
+        <div class="form-card">
+
+            <form th:action="@{/voucher/update/{id}(id=${voucher.id})}"
+                  method="post">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <!-- hidden status -->
+                <input type="hidden"
+                       name="status"
+                       value="ACTIVE">
+
+                <div class="form-grid">
+
+                    <!-- Mã voucher -->
+                    <div class="form-group">
+
+                        <label>Mã Voucher</label>
+
+                        <input type="text"
+                               name="voucherCode"
+                               th:value="${voucher.voucherCode}">
+
+                    </div>
+
+                    <!-- Tên voucher -->
+                    <div class="form-group">
+
+                        <label>Tên Voucher</label>
+
+                        <input type="text"
+                               name="voucherName"
+                               th:value="${voucher.voucherName}">
+
+                    </div>
+
+                    <!-- Loại giảm -->
+                    <div class="form-group">
+
+                        <label>Loại giảm</label>
+
+                        <select name="discountType">
+
+                            <option value="PERCENT"
+                                    th:selected="${voucher.discountType == 'PERCENT'}">
+
+                                Phần trăm
+
+                            </option>
+
+                            <option value="FIXED"
+                                    th:selected="${voucher.discountType == 'FIXED'}">
+
+                                Tiền mặt
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Giá trị -->
+                    <div class="form-group">
+
+                        <label>Giá trị</label>
+
+                        <input type="number"
+                               name="value"
+                               th:value="${voucher.value}">
+
+                    </div>
+
+                    <!-- Số lượng -->
+                    <div class="form-group">
+
+                        <label>Số lượng</label>
+
+                        <input type="number"
+                               name="amount"
+                               th:value="${voucher.amount}">
+
+                    </div>
+
+                    <!-- Ngày bắt đầu -->
+                    <div class="form-group">
+
+                        <label>Ngày bắt đầu</label>
+
+                        <input type="datetime-local"
+                               name="startDate"
+                               th:value="${#temporals.format(voucher.startDate, 'yyyy-MM-dd''T''HH:mm')}">
+
+                    </div>
+
+                    <!-- Ngày kết thúc -->
+                    <div class="form-group">
+
+                        <label>Ngày kết thúc</label>
+
+                        <input type="datetime-local"
+                               name="endDate"
+                               th:value="${#temporals.format(voucher.endDate, 'yyyy-MM-dd''T''HH:mm')}">
+
+                    </div>
+
+                </div>
+
+                <!-- Actions -->
+                <div class="form-actions">
+
+                    <a th:href="@{/voucher}"
+                       class="btn-cancel">
+
+                        Hủy
+
+                    </a>
+
+                    <button type="submit"
+                            class="btn-save">
+
+                        💾 Cập nhật Voucher
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>

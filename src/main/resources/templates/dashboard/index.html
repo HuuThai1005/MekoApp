@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>MEKO</title>
+
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+<section class="dashboard">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            MEKO
+        </div>
+
+        <ul>
+
+            <li><a th:href="@{/}">🏠 Dashboard</a></li>
+
+            <li><a href="/stories">📖 Stories</a></li>
+
+            <li><a href="/product">🛍 Products</a></li>
+
+            <li><a th:href="@{/voucher}">🎟 Vouchers</a></li>
+
+            <li><a href="/profile">👤 Profile</a></li>
+
+        </ul>
+
+    </aside>
+
+    <main class="dashboard-content">
+
+        <div class="welcome-card">
+
+            <h2>
+                Xin chào,
+                <span th:text="${username}"></span>
+            </h2>
+
+            <p>
+                Chào mừng trở lại với MEKO
+            </p>
+
+        </div>
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <h3 th:text="${stories}"></h3>
+                <p>Câu chuyện</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 th:text="${products}"></h3>
+                <p>Sản phẩm</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 th:text="${vouchers}"></h3>
+                <p>Voucher</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 th:text="${categories}"></h3>
+                <p>Category</p>
+            </div>
+
+        </div>
+
+        <section class="dashboard-section">
+
+            <h3>Câu chuyện nổi bật</h3>
+
+            <div class="story-row">
+
+                <div class="mini-story-card">
+                    Story 1
+                </div>
+
+                <div class="mini-story-card">
+                    Story 2
+                </div>
+
+                <div class="mini-story-card">
+                    Story 3
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</section>
+
+</body>
+</html>
+
+<footer>
+
+    <h3>MEKO</h3>
+
+    <p>
+        Digital Storytelling & Cultural Souvenir
+    </p>
+
+</footer>
+
+</body>
+</html>

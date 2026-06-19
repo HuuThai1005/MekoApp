@@ -20,4 +20,17 @@ public class VoucherService {
         vouchers = voucherRepository.findAll();
         return vouchers;
     }
+
+    public Voucher findById(Integer id) {
+        return voucherRepository.findById(id)
+                .orElse(null);
+    }
+
+    public Voucher save(Voucher voucher) {
+        return voucherRepository.save(voucher);
+    }
+
+    public void delete(Integer id) {
+        voucherRepository.deleteById(id);
+    }
 }
