@@ -16,12 +16,13 @@ public class VoucherController {
     public VoucherController(VoucherService voucherService) {
         this.voucherService = voucherService;
     }
-
+// lấy danh sách voucher
     @GetMapping
     public String findAll(Model model) {
         model.addAttribute("vouchers",voucherService.findAll());
         return "dashboard/voucher_list";
     }
+    // gọi đến trang create voucher
     @GetMapping("/create-voucher")
     public String create(Model model) {
 
@@ -31,7 +32,7 @@ public class VoucherController {
 
         return "dashboard/voucher_create";
     }
-
+    // hứng path voucher từ form
     @PostMapping("/create")
     public String store(
             @ModelAttribute Voucher voucher) {
@@ -40,7 +41,7 @@ public class VoucherController {
 
         return "redirect:/voucher";
     }
-
+    // gọi đến trang edit của voucher có id đã chọn
     @GetMapping("/edit/{id}")
     public String edit(
             @PathVariable Integer id,
@@ -52,7 +53,7 @@ public class VoucherController {
 
         return "dashboard/voucher_edit";
     }
-
+    // update lại voucher đã chọn
     @PostMapping("/update/{id}")
     public String update(
             @PathVariable Integer id,
@@ -89,7 +90,7 @@ public class VoucherController {
 
         return "redirect:/voucher";
     }
-
+    // xóa voucher đã chọn
     @GetMapping("/delete/{id}")
     public String delete(
             @PathVariable Integer id) {
