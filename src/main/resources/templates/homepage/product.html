@@ -7,6 +7,8 @@
   <title>Product</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/voucher.css}">
 
 
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap"
@@ -57,54 +59,57 @@
   </div>
 
 </header>
-<h2>Danh sách sản phẩm</h2>
-<div class="action-bar">
-    <a th:href="@{/product/create-product}" class="btn-add">
-        + Tạo thêm Sản Phẩm
-    </a>
-</div>
+<section>
+    <h2 class="page-header">Danh sách sản phẩm</h2>
+    <div class="action-bar">
+        <a th:href="@{/product/create-product}" class="btn-add">
+            + Tạo thêm Sản Phẩm
+        </a>
+    </div>
 
-<div class="product-grid">
+    <div class="product-grid">
 
-    <div class="product-card"
-         th:each="product : ${products}">
+        <div class="product-card"
+             th:each="product : ${products}">
 
-        <img th:src="${product.imageUrl}"
-             alt="product">
+            <img th:src="${product.imageUrl}"
+                 alt="product">
 
-        <div class="product-content">
+            <div class="product-content">
 
-            <h3 th:text="${product.productName}"></h3>
+                <h3 th:text="${product.productName}"></h3>
 
-            <p th:text="${product.description}"></p>
+                <p th:text="${product.description}"></p>
 
-            <p>
-                Giá:
-                <strong th:text="${product.price} + ' VNĐ'"></strong>
-            </p>
+                <p>
+                    Giá:
+                    <strong th:text="${product.price} + ' VNĐ'"></strong>
+                </p>
 
-            <p>
-                Danh mục:
-                <span th:text="${product.category.categoryName}"></span>
-            </p>
+                <p>
+                    Danh mục:
+                    <span th:text="${product.category.categoryName}"></span>
+                </p>
 
-            <button class="btn-buy">
-                Thêm vào giỏ hàng
-            </button>
-            <a href="#"
-               class="btn-delete"
-               th:attr="data-url=@{/product/delete/{id}(id=${product.id})}"
-               onclick="openDeleteModal(this)">
+                <button class="btn-buy">
+                    Thêm vào giỏ hàng
+                </button>
+                <a href="#"
+                   class="btn-delete"
+                   th:attr="data-url=@{/product/delete/{id}(id=${product.id})}"
+                   onclick="openDeleteModal(this)">
 
-                🗑
+                    🗑
 
-            </a>
+                </a>
+
+            </div>
 
         </div>
 
     </div>
+</section>
 
-</div>
 <!-- Delete Modal -->
 <div id="deleteModal" class="modal-overlay">
 
