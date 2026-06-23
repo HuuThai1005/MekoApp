@@ -1,11 +1,11 @@
 package Meko.Meko.controller;
 
+import Meko.Meko.entities.Product;
 import Meko.Meko.services.ProductService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/product")
@@ -21,4 +21,26 @@ public class ProductController
         model.addAttribute("products", productService.findAll());
         return "homepage/product";
     }
+    @GetMapping("/create-product")
+    public String create (Model model){
+        model.addAttribute("product",new Product());
+        return "dashboard/product_create";
+    }
+    @PostMapping("/create")
+    public String store (
+            @ModelAttribute Product product
+    )
+    {
+        productService.save(product);
+        return "redirect:/product";
+    }
+    @GetMapping("/delete/{id}")
+    public String delete(
+            @PathVariable Integer id
+    )
+    {
+        productService.delete(id);
+        return "redirect:/product";
+    }
+
 }

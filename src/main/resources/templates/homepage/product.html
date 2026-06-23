@@ -58,6 +58,11 @@
 
 </header>
 <h2>Danh sách sản phẩm</h2>
+<div class="action-bar">
+    <a th:href="@{/product/create-product}" class="btn-add">
+        + Tạo thêm Sản Phẩm
+    </a>
+</div>
 
 <div class="product-grid">
 
@@ -86,6 +91,51 @@
             <button class="btn-buy">
                 Thêm vào giỏ hàng
             </button>
+            <a href="#"
+               class="btn-delete"
+               th:attr="data-url=@{/product/delete/{id}(id=${product.id})}"
+               onclick="openDeleteModal(this)">
+
+                🗑
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- Delete Modal -->
+<div id="deleteModal" class="modal-overlay">
+
+    <div class="modal-box">
+
+        <div class="modal-icon">
+            ⚠️
+        </div>
+
+        <h3>Xác nhận xóa</h3>
+
+        <p>
+            Bạn có chắc muốn xóa sản phẩm này không?
+        </p>
+
+        <div class="modal-actions">
+
+            <button class="btn-cancel-modal"
+                    onclick="closeDeleteModal()">
+
+                Hủy
+
+            </button>
+
+            <a id="confirmDeleteBtn"
+               href="#"
+               class="btn-confirm-delete">
+
+                Xóa
+
+            </a>
 
         </div>
 
@@ -94,6 +144,7 @@
 </div>
 
 <footer>
+
 
   <h3>MEKO</h3>
 
@@ -104,6 +155,43 @@
 </footer>
 
 </body>
+<script>
 
+    function openDeleteModal(button) {
+
+        const url = button.getAttribute("data-url");
+
+        document
+            .getElementById("confirmDeleteBtn")
+            .setAttribute("href", url);
+
+        document
+            .getElementById("deleteModal")
+            .classList.add("show");
+
+    }
+
+    function closeDeleteModal() {
+
+        document
+            .getElementById("deleteModal")
+            .classList.remove("show");
+
+    }
+
+    window.onclick = function(event) {
+
+        const modal =
+            document.getElementById("deleteModal");
+
+        if (event.target === modal) {
+
+            closeDeleteModal();
+
+        }
+
+    }
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </html>

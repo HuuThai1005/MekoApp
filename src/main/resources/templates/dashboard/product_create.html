@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>MEKO</title>
+
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/voucher.css}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+<section class="">
+
+    <!-- Header -->
+    <div class="page-header">
+
+        <h2>Tạo Mới Sản Phẩm</h2>
+
+        <a th:href="@{/product}"
+           class="btn-back">
+
+            ← Quay lại
+
+        </a>
+
+    </div>
+
+    <!-- Form -->
+    <div class="form-card">
+        <!-- gửi path voucher lên để controller hứng-->
+        <form th:action="@{/product/create}"
+              method="post">
+
+
+
+                <input type="hidden"
+                       name="id">
+
+
+
+            <div class="form-group">
+
+                <label>Tên Product</label>
+
+                <input type="text"
+                       name="productName"
+                       placeholder="Nhập tên product">
+
+            </div>
+            <div class="form-group">
+                <label>Chọn loại sản phẩm</label>
+                <select name="category">
+                    <option value="1">
+                        Móc khóa
+                    </option>
+                    <option value="2">
+                        Magnet tủ lạnh
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+
+                <label>Mô Tả</label>
+
+                <input type="text"
+                       name="description"
+                       placeholder="Nhập mô tả sản phẩm">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Giá trị</label>
+
+                <input type="number"
+                       name="price"
+                       placeholder="Nhập giá trị">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Số lượng</label>
+
+                <input type="number"
+                       name="stock"
+                       placeholder="Nhập số lượng">
+
+            </div>
+            <div class="form-group">
+                <label>Chọn Ảnh</label>
+                <select name="imageUrl">
+                    <option value="/asset/cay_lua.jpg">
+                        Cây lúa
+                    </option>
+                    <option value="/asset/cau_can_tho.jpg">
+                        Cầu Cần Thơ
+                    </option>
+                    <option value="/asset/cho_noi_cai_rang.jpg">
+                        Chợ nổi Cái Răng
+                    </option>
+                    <option value="/asset/chua_khmer.jpg">
+                        Chùa Khmer
+                    </option>
+                </select>
+            </div>
+            <input type="hidden"
+            name="status"
+            value="active">
+
+
+                <input type="hidden"
+                       name="createAt">
+
+
+
+
+            <input type="hidden"
+                   name="status"
+                   value="ACTIVE">
+
+            <div class="form-actions">
+
+                <a th:href="@{/dashboard/product}"
+                   class="btn-cancel">
+
+                    Hủy
+
+                </a>
+
+                <button type="submit"
+                        class="btn-save">
+
+                    Lưu Sản Phẩm
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+</body>
+</html>

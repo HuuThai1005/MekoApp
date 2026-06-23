@@ -20,5 +20,13 @@ public class ProductService {
         return products;
 
     }
+    public Product save(Product product)
+    {
+        return productRepository.save(product);
+    }
+    public void delete(Integer id){
+        productRepository.deleteById(id);
+    }
+
 }
 
