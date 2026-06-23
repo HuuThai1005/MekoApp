@@ -94,6 +94,10 @@
                 <button class="btn-buy">
                     Thêm vào giỏ hàng
                 </button>
+                <a th:href="@{/product/edit/{id}(id=${product.id})}"
+                   class="btn-edit">
+                    ✏
+                </a>
                 <a href="#"
                    class="btn-delete"
                    th:attr="data-url=@{/product/delete/{id}(id=${product.id})}"

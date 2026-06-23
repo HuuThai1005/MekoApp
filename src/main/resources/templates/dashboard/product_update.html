@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <meta charset="UTF-8">
+  <title>MEKO</title>
+
+  <link rel="stylesheet" th:href="@{/css/home.css}">
+  <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <section class="">
+
+    <!-- Header -->
+    <div class="page-header">
+
+      <h2>Chỉnh sửa Sản Phẩm</h2>
+
+      <a th:href="@{/product}"
+         class="btn-back">
+
+        ← Quay lại
+
+      </a>
+
+    </div>
+
+    <!-- Form -->
+    <div class="form-card">
+
+      <form th:action="@{/product/update/{id}(id=${product.id})}"
+            method="post">
+
+
+
+
+        <div class="form-group">
+
+          <label>Tên Product</label>
+
+          <input type="text"
+                 name="productName"
+                 placeholder="Nhập tên product"
+                 th:value="${product.productName}">
+
+
+        </div>
+        <div class="form-group">
+
+            <label>Loại sản phẩm</label>
+
+            <select name="category.id">
+
+              <option value=1
+                      th:selected="${product.category.id == 1}">
+
+                Móc khóa
+
+              </option>
+
+              <option value=2
+                      th:selected="${product.category.id == 2}">
+
+                Magnet tủ lạnh
+
+              </option>
+
+            </select>
+
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Mô Tả</label>
+
+          <input type="text"
+                 name="description"
+                 placeholder="Nhập mô tả sản phẩm"
+          th:value="${product.description}">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Giá trị</label>
+
+          <input type="number"
+                 name="price"
+                 placeholder="Nhập giá trị"
+          th:value="${product.price}">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Số lượng</label>
+
+          <input type="number"
+                 name="stock"
+                 placeholder="Nhập số lượng"
+          th:value="${product.stock}">
+
+        </div>
+        <div class="form-group">
+
+          <label>Chọn ảnh</label>
+
+          <select name="imageUrl">
+
+            <option value="/asset/cay_lua.jpg"
+                    th:selected="${product.imageUrl == '/asset/cay_lua.jpg'}">
+
+              Cây lúa
+
+            </option>
+
+            <option value="/asset/cau_can_tho.jpg"
+                    th:selected="${product.imageUrl == '/asset/cau_can_tho.jpg'}">
+
+              Cầu Cần Thơ
+
+            </option>
+
+            <option value="/asset/cho_noi_cai_rang.jpg"
+                    th:selected="${product.imageUrl == '/asset/cho_noi_cai_rang.jpg'}">
+
+              Chợ nổi Cái Răng
+
+            </option>
+
+            <option value="/asset/chua_khmer.jpg"
+                    th:selected="${product.imageUrl == '/asset/chua_khmer.jpg'}">
+
+              Chùa Khmer
+
+            </option>
+
+          </select>
+
+        </div>
+
+        <input type="hidden"
+               name="createdAt"
+        th:value="${product.createdAt}">
+
+        <div class="form-group">
+
+          <label>Trạng thái</label>
+
+          <select name="status">
+
+            <option value="active"
+                    th:selected="${product.status == 'active'}">
+
+              ACTIVE
+
+            </option>
+
+            <option value="unactive"
+                    th:selected="${product.status == 'unactive'}">
+
+              UNACTIVE
+
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+
+          <a th:href="@{/product}"
+             class="btn-cancel">
+
+            Hủy
+
+          </a>
+
+          <button type="submit"
+                  class="btn-save">
+
+            💾 Cập nhật Sản Phẩm
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </section>
+
+</div>
+
+</body>
+</html>

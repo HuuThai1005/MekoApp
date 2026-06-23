@@ -1,6 +1,7 @@
 package Meko.Meko.controller;
 
 import Meko.Meko.entities.Product;
+import Meko.Meko.entities.Voucher;
 import Meko.Meko.services.ProductService;
 
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,52 @@ public class ProductController
     )
     {
         productService.delete(id);
+        return "redirect:/product";
+    }
+    @GetMapping("/edit/{id}")
+    public String edit(
+            @PathVariable Integer id,
+            Model model) {
+
+        model.addAttribute(
+                "product",
+                productService.findById(id));
+
+        return "dashboard/product_update";
+    }
+    @PostMapping("/update/{id}")
+    public String update(
+            @PathVariable Integer id,
+            @ModelAttribute Product formProduct) {
+
+        Product product =
+                productService.findById(id);
+        System.out.println("Category = " + formProduct.getCategory());
+        product.setProductName(formProduct.getProductName());
+
+        product.setDescription(
+                formProduct.getDescription());
+
+        product.setPrice(formProduct.getPrice());
+
+        product.setStock(
+                formProduct.getStock());
+
+        product.setImageUrl(
+                formProduct.getImageUrl());
+
+        product.setStatus(
+                formProduct.getStatus());
+
+        product.setCreatedAt(
+                formProduct.getCreatedAt());
+
+        product.setCategory(
+                formProduct.getCategory()
+        );
+
+        productService.save(product);
+
         return "redirect:/product";
     }
 
