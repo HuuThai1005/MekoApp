@@ -1,209 +1,140 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEKO — Di Sản Văn Hóa Sông Nước Cao Cấp</title>
 
-    <title>MEKO</title>
-
+    <!-- Google Fonts: Kết hợp Font Serif quý phái cho Tiêu đề & Sans-serif hiện đại cho nội dung -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/home.css}">
 
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap"
-          rel="stylesheet">
-
 </head>
-
 <body>
 
 <header class="navbar">
-
-    <div class="logo">
-        MEKO
-    </div>
+    <div class="logo">MEKO</div>
 
     <nav>
         <a th:href="@{/}">Trang chủ</a>
-        <a href="#">Khám phá</a>
-        <a href="#">Câu chuyện</a>
         <a th:href="@{/voucher}">Voucher</a>
         <a th:href="@{/category}">Cate</a>
         <a th:href="@{/product}">Product</a>
+        <a th:href="@{/cart}">Giỏ hàng</a>
     </nav>
+
+    <!-- Guest Session[cite: 1] -->
     <div th:if="${username == null}" class="user-menu">
         <a th:href="@{/login}">Login</a>
     </div>
-    <div th:if="${username != null}" class="user-menu">
 
+    <!-- Authenticated Session[cite: 1] -->
+    <div th:if="${username != null}" class="user-menu">
         <button class="user-btn">
             Hi, <span th:text="${username}"></span>
         </button>
-
         <div class="dropdown-content">
-
             <a th:href="@{/profile}">Profile</a>
-
             <a href="/orders">My Orders</a>
-
             <form action="/logout" method="post">
-                <button type="submit" class="logout-btn">
-                    Logout
-                </button>
-
-                <input type="hidden"
-                       th:name="${_csrf.parameterName}"
-                       th:value="${_csrf.token}">
+                <button type="submit" class="logout-btn">Logout</button>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             </form>
-
         </div>
-
     </div>
-
 </header>
 
 <section class="hero">
-
     <div class="hero-content">
-
         <h1>MEKO</h1>
-
-        <p>
-            Mỗi món quà là một cánh cửa dẫn đến
-            những câu chuyện văn hóa của Đồng bằng
-            sông Cửu Long.
-        </p>
-
+        <p>Mỗi món quà là một cánh cửa mở ra thế giới, nơi lưu giữ những câu chuyện văn hóa tinh hoa sâu lắng của dòng sông Mekong.</p>
         <div class="hero-buttons">
-            <a href="/stories" class="btn-primary">
-                Khám phá ngay
-            </a>
+            <a href="/stories" class="btn-primary">Khám phá ngay</a>
         </div>
-
     </div>
-
 </section>
 
 <section class="cultures">
-
     <div class="section-title">
         <span>Khám phá bản sắc</span>
         <h2>4 Nền Văn Hóa Đặc Trưng</h2>
-        <p>
-            Những mảnh ghép tạo nên sự đa dạng văn hóa của Đồng bằng sông Cửu Long.
-        </p>
+        <p>Những mảnh ghép độc bản dệt nên bức tranh di sản kiêu hãnh của vùng đất Nam Bộ.</p>
     </div>
 
     <div class="culture-grid">
-
         <div class="culture-card">
             <div class="culture-icon">🎵</div>
             <h3>Kinh</h3>
-            <p>Đờn ca tài tử • Khăn rằn • Chợ nổi</p>
+            <p>Đờn ca tài tử • Khăn rằn • Chợ nổi tự nhiên</p>
         </div>
-
         <div class="culture-card">
             <div class="culture-icon">🏯</div>
             <h3>Khmer</h3>
-            <p>Ok Om Bok • Chùa Khmer • Nghệ thuật kiến trúc</p>
+            <p>Lễ hội Ok Om Bok • Kiến trúc Chùa Vàng độc đáo</p>
         </div>
-
         <div class="culture-card">
             <div class="culture-icon">🏮</div>
             <h3>Hoa</h3>
-            <p>Bánh Pía • Hội quán • Văn hóa thương hồ</p>
+            <p>Văn hóa thương hồ • Hội quán cổ kính • Bánh Pía truyền thống</p>
         </div>
-
         <div class="culture-card">
             <div class="culture-icon">🕌</div>
             <h3>Chăm</h3>
-            <p>Thổ cẩm • Ramadan • Nghệ thuật truyền thống</p>
+            <p>Kỹ nghệ dệt thổ cẩm cổ truyền • Thánh đường Ramadan</p>
         </div>
-
     </div>
-
 </section>
 
 <section class="stories">
-
     <div class="section-title">
         <span>Storytelling</span>
         <h2>Câu Chuyện Nổi Bật</h2>
-        <p>
-            Mỗi món quà lưu niệm là một hành trình khám phá văn hóa miền Tây.
-        </p>
+        <p>Hành trình đưa hồn cốt văn hóa bản địa ẩn mình vào trong những tác phẩm lưu niệm nghệ thuật.</p>
     </div>
 
     <div class="story-grid">
-
-        <div class="story-card"
-             th:each="story : ${featuredStories}">
-
-            <img th:src="${story.coverImage}"
-                 alt="story image">
-
+        <!-- Vòng lặp lấy dữ liệu từ Backend của bạn giữ nguyên[cite: 1] -->
+        <div class="story-card" th:each="story : ${featuredStories}">
+            <img th:src="${story.coverImage}" alt="story image">
             <div class="story-overlay">
-
-                <span class="story-tag">
-                    Văn hóa Mekong
-                </span>
-
+                <span class="story-tag">Văn hóa Mekong</span>
                 <h3 th:text="${story.title}"></h3>
-
                 <p th:text="${story.summary}"></p>
-
-                <a class="story-btn"
-                   th:href="@{/stories/{id}(id=${story.id})}">
-                    Khám phá câu chuyện →
-                </a>
-
+                <a class="story-btn" th:href="@{/stories/{id}(id=${story.id})}">Khám phá câu chuyện</a>
             </div>
-
         </div>
-
     </div>
-
 </section>
+
 <section class="shop-preview">
-
     <h2>Souvenir Collection</h2>
-
     <div class="product-grid">
-
         <div class="product-card">
-
-            <img src="/asset/chua_khmer.jpg">
-
-            <h3>Bookmark Khmer</h3>
-
+            <div class="product-image-wrapper">
+                <img src="/asset/chua_khmer.jpg" alt="Bookmark Khmer">
+            </div>
+            <h3>Bookmark Khmer Premium</h3>
         </div>
-
         <div class="product-card">
-
-            <img src="/asset/cau_can_tho.jpg">
-
-            <h3>Fridge Magnet</h3>
-
+            <div class="product-image-wrapper">
+                <img src="/asset/cau_can_tho.jpg" alt="Fridge Magnet">
+            </div>
+            <h3>Elegant Fridge Magnet</h3>
         </div>
-
         <div class="product-card">
-
-            <img src="/asset/cho_noi_cai_rang.jpg">
-
-            <h3>Xuồng Ba Lá</h3>
-
+            <div class="product-image-wrapper">
+                <img src="/asset/cho_noi_cai_rang.jpg" alt="Xuồng Ba Lá">
+            </div>
+            <h3>Mô Hình Xuồng Ba Lá Cổ Nghệ</h3>
         </div>
-
     </div>
-
 </section>
 
 <footer>
-
     <h3>MEKO</h3>
-
-    <p>
-        Digital Storytelling & Cultural Souvenir
-    </p>
-
+    <p>Digital Storytelling & Cultural Souvenir — All Rights Reserved</p>
 </footer>
 
 </body>

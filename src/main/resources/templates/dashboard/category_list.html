@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MEKO Admin - Danh Mục</title>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+
+<div class="admin-wrapper">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-logo">MEKO ADMIN</div>
+        <ul class="sidebar-menu">
+            <li><a th:href="@{/dashboard}">🏠 Thống Kê Chung</a></li>
+            <li><a th:href="@{/category}">📁 Quản Lý Danh Mục</a></li>
+            <li><a th:href="@{/dashboard/product}">🛍 Quản Lý Sản Phẩm</a></li>
+            <li><a th:href="@{/dashboard/voucher}">🎟 Quản Lý Vouchers</a></li>
+<!--            <li><a th:href="@{/profile}">👤 Tài Khoản</a></li>-->
+        </ul>
+    </aside>
+
+    <!-- Main Working Area -->
+    <main class="admin-main">
+        <div class="admin-header">
+            <h2>Danh Sách Danh Mục Sản Phẩm</h2>
+            <div class="user-badge">Hi, <span th:text="${username}"></span></div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 1.5rem;">
+            <a th:href="@{/category/create-cate}" class="btn-adm btn-adm-primary">+ Thêm Danh Mục Mới</a>
+        </div>
+
+        <div class="table-container">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th style="width: 100px;">ID</th>
+                    <th style="width: 250px;">Tên Danh Mục</th>
+                    <th>Mô Tả Chi Tiết</th>
+                    <th style="text-align: right; width: 180px;">Thao Tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cate : ${cates}">
+                    <td th:text="${cate.id}" style="font-weight: 600;"></td>
+                    <td th:text="${cate.categoryName}" style="font-weight: 500; color: var(--sidebar-bg);"></td>
+                    <td th:text="${cate.description}"></td>
+                    <td style="text-align: right;">
+                        <a th:href="@{/category/edit/{id}(id=${cate.id})}" class="btn-adm btn-adm-edit">✏ Sửa</a>
+                        <a href="#" class="btn-adm btn-adm-danger" th:attr="data-url=@{/category/delete/{id}(id=${cate.id})}" onclick="openDeleteModal(this)">🗑 Xóa</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<!-- Modal Xác Nhận Xóa Cố Định -->
+<div id="deleteModal" class="admin-modal-overlay">
+    <div class="admin-modal-card">
+        <div style="font-size: 2.5rem; margin-bottom: 1rem;">⚠️</div>
+        <h3 style="margin-bottom: 0.5rem; font-weight: 700;">Xác Nhận Xóa</h3>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Bạn có chắc chắn muốn xóa bản ghi này khỏi cơ sở dữ liệu không?</p>
+        <div style="display: flex; justify-content: center; gap: 1rem;">
+            <button class="btn-adm btn-adm-secondary" onclick="closeDeleteModal()">Hủy</button>
+            <a id="confirmDeleteBtn" href="#" class="btn-adm btn-adm-primary" style="background-color: #ef4444;">Xác Nhận Xóa</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDeleteModal(button) {
+        const url = button.getAttribute("data-url");
+        document.getElementById("confirmDeleteBtn").setAttribute("href", url);
+        document.getElementById("deleteModal").classList.add("show");
+    }
+    function closeDeleteModal() {
+        document.getElementById("deleteModal").classList.remove("show");
+    }
+</script>
+</body>
+</html>

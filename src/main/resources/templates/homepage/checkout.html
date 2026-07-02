@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MEKO Collection - Xác Nhận Sở Hữu</title>
+    <!-- Google Fonts Luxury đồng bộ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- File CSS dùng chung hệ thống -->
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+
+
+</head>
+<body>
+
+<!-- FIXED NAVBAR ĐỒNG BỘ 100% -->
+<header class="navbar">
+    <div class="logo">MEKO</div>
+    <nav>
+        <a th:href="@{/}">Trang chủ</a>
+        <a th:href="@{/voucher}">Voucher</a>
+        <a th:href="@{/category}">Cate</a>
+        <a th:href="@{/product}">Product</a>
+        <a th:href="@{/cart}">Giỏ hàng</a>
+    </nav>
+    <div th:if="${username == null}" class="user-menu">
+        <a th:href="@{/login}">Login</a>
+    </div>
+    <div th:if="${username != null}" class="user-menu">
+        <button class="user-btn">Hi, <span th:text="${username}"></span></button>
+        <div class="dropdown-content">
+            <a th:href="@{/profile}">Profile</a>
+            <a href="/orders">My Orders</a>
+            <form action="/logout" method="post">
+                <button type="submit" class="logout-btn">Logout</button>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            </form>
+        </div>
+    </div>
+</header>
+
+<!-- BANNER ĐẦU TRANG THEO PHONG CÁCH TẠP CHÍ -->
+<section class="container" style="padding-top: 80px; padding-bottom: 0;">
+    <div class="section-title" style="margin-bottom: 40px;">
+        <span>Meko Gateway</span>
+        <h2>Thông tin đặt mua</h2>
+    </div>
+</section>
+
+<!-- BỐ CỤC CHÍNH ĐỒNG BỘ: ĐÃ BAO BỌC FORM CHO TOÀN BỘ TRANG -->
+<form th:action="@{/checkout}" method="post">
+    <!-- Thêm Token CSRF bảo mật cho Spring Security -->
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+    <main class="checkout-container">
+
+        <!-- CỘT TRÁI: NHẬP THÔNG TIN GIAO HÀNG -->
+        <div class="checkout-main-content">
+                <h3 class="checkout-section-title"><b>Thông tin giao hàng</b></h3>
+
+
+            <div class="form-group">
+                <label class="form-label">Tên người nhận</label>
+                <input type="text"
+                       name="receiverName"
+                       class="form-input"
+                       placeholder="Nhập họ và tên của bạn"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Số điện thoại</label>
+                <input type="text"
+                       name="phone"
+                       class="form-input"
+                       placeholder="Nhập số liên lạc di động"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Địa chỉ giao hàng</label>
+                <input type="text"
+                       name="shippingAddress"
+                       class="form-input"
+                       placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh thành"
+                       required>
+            </div>
+        </div>
+
+        <!-- CỘT PHẢI: SIDEBAR TÍNH TIỀN VÀ XÁC NHẬN -->
+        <aside class="summary-sidebar">
+            <div class="summary-title"><h2><b>Giá trị đơn hàng</b></h2></div>
+            <div class="summary-line">
+                <span>Tạm tính tổng</span>
+                <!-- Tự động tính toán tổng tiền từ danh sách giỏ hàng nếu có biến cartItems -->
+                <span class="premium-price">
+                    <span th:text="${cartItems != null ? #numbers.formatDecimal(#aggregates.sum(cartItems.![product.price * quantity]), 0, 'COMMA', 0, 'POINT') : '0'}"></span>
+            </div>
+
+            <div class="summary-line">
+                <span>Vận chuyển toàn quốc</span>
+                <span style="color: var(--accent); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px;">Complimentary</span>
+            </div>
+
+            <div class="summary-line grand-total">
+                <span>Tổng chi phí</span>
+                <span class="total-amount-box">
+                    <span th:text="${cartItems != null ? #numbers.formatDecimal(#aggregates.sum(cartItems.![product.price * quantity]), 0, 'COMMA', 0, 'POINT') : '0'}"></span><span class="premium-price"><span class="currency">VNĐ</span></span>
+                </span>
+            </div>
+            <div class="payment-method">
+
+                <h3>Phương thức thanh toán</h3>
+
+                <label>
+                    <input type="radio"
+                           name="paymentMethod"
+                           value="COD"
+                           checked>
+
+                    Thanh toán khi nhận hàng (COD)
+                </label>
+
+                <br><br>
+
+                <label>
+                    <input type="radio"
+                           name="paymentMethod"
+                           value="BANKING">
+
+                    Chuyển khoản QR
+                </label>
+
+            </div>
+
+            <!-- Nút bấm submit nằm gọn trong form, sẵn sàng kích hoạt lệnh lưu xuống database -->
+            <button type="submit" class="btn-premium-checkout">Xác nhận đặt hàng</button>
+
+            <a th:href="@{/cart}" class="btn-continue" style="display: block; text-align: center; margin-top: 2rem; text-decoration: none; font-size: 0.85rem; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase;">
+                ← Quay lại giỏ hàng
+            </a>
+        </aside>
+
+    </main>
+</form>
+
+<!-- EDITORIAL MINIMAL FOOTER ĐỒNG BỘ 100% -->
+<footer>
+    <h3>MEKO</h3>
+    <p>Digital Storytelling & Cultural Souvenir — Authentic Mekong Design</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

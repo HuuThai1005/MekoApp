@@ -1,7 +1,6 @@
 package Meko.Meko.controller;
 
 import Meko.Meko.entities.Product;
-import Meko.Meko.entities.Voucher;
 import Meko.Meko.services.ProductService;
 
 import org.springframework.stereotype.Controller;
@@ -9,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/product")
+@RequestMapping("/dashboard/product")
 public class ProductController
 {
     private ProductService productService;
@@ -20,7 +19,7 @@ public class ProductController
     @GetMapping
     public String findAll(Model model) {
         model.addAttribute("products", productService.findAll());
-        return "homepage/product";
+        return "dashboard/product_list";
     }
     @GetMapping("/create-product")
     public String create (Model model){
@@ -33,7 +32,7 @@ public class ProductController
     )
     {
         productService.save(product);
-        return "redirect:/product";
+        return "redirect:/dashboard/product";
     }
     @GetMapping("/delete/{id}")
     public String delete(
@@ -41,7 +40,7 @@ public class ProductController
     )
     {
         productService.delete(id);
-        return "redirect:/product";
+        return "redirect:/dashboard/product";
     }
     @GetMapping("/edit/{id}")
     public String edit(
@@ -61,7 +60,6 @@ public class ProductController
 
         Product product =
                 productService.findById(id);
-        System.out.println("Category = " + formProduct.getCategory());
         product.setProductName(formProduct.getProductName());
 
         product.setDescription(
@@ -87,7 +85,7 @@ public class ProductController
 
         productService.save(product);
 
-        return "redirect:/product";
+        return "redirect:/dashboard/product";
     }
 
 }

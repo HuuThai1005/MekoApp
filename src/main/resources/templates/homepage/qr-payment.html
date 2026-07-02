@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MEKO Collection - Cổng Thanh Toán Di Sản</title>
+    <!-- Google Fonts Luxury đồng bộ hệ thống -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- File CSS dùng chung hệ thống -->
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+
+    <style>
+        :root {
+            --primary: #031525;
+            --accent: #b35432;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Be Vietnam Pro', sans-serif;
+            --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            --shadow-premium: 0 30px 60px rgba(3, 21, 37, 0.04);
+        }
+
+        body {
+            background: #fafafa;
+            font-family: var(--font-sans);
+            color: var(--primary);
+        }
+
+        /* Khung thanh toán trung tâm mang phong cách tối giản cao cấp */
+        .payment-wrapper {
+            max-width: 550px;
+            margin: 60px auto 100px auto;
+            background: var(--white);
+            padding: 4.5rem 3.5rem;
+            box-shadow: var(--shadow-premium);
+            border: 1px solid rgba(3, 21, 37, 0.02);
+            text-align: center;
+        }
+
+        .payment-title {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .payment-subtitle {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            display: block;
+        }
+
+        /* Khung hiển thị QR như một tác phẩm triển lãm */
+        .qr-gallery-frame {
+            display: inline-block;
+            padding: 25px;
+            background: var(--white);
+            border: 1px solid rgba(3, 21, 37, 0.06);
+            margin-bottom: 3rem;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .qr-gallery-frame:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .qr-image {
+            display: block;
+            width: 260px;
+            height: 260px;
+            object-fit: contain;
+        }
+
+        /* Định dạng khối hiển thị tổng số tiền thanh toán thoáng đạt */
+        .amount-display-box {
+            border-top: 1px solid rgba(3, 21, 37, 0.08);
+            padding-top: 2rem;
+            margin-top: 1rem;
+        }
+
+        .amount-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .premium-price {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Đồng bộ khoảng cách VNĐ tinh tế rộng rãi */
+        .premium-price span.currency {
+            margin-left: 8px;
+            display: inline-block;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--primary);
+        }
+
+        /* Khung trạng thái đếm ngược hệ thống thông minh */
+        .status-countdown-box {
+            margin-top: 3.5rem;
+            background: rgba(3, 21, 37, 0.02);
+            padding: 1.2rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            font-size: 0.9rem;
+            color: var(--primary);
+        }
+
+        /* Con số đếm ngược Serif cổ điển quý phái */
+        .countdown-number {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            color: var(--accent);
+            font-weight: 700;
+            min-width: 20px;
+            display: inline-block;
+        }
+
+        .loading-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(0.6); opacity: 0.4; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- FIXED NAVBAR ĐỒNG BỘ MẠNG LƯỚI MEKO -->
+<header class="navbar">
+    <div class="logo">MEKO</div>
+    <nav>
+        <a th:href="@{/}">Trang chủ</a>
+        <a th:href="@{/voucher}">Voucher</a>
+        <a th:href="@{/category}">Cate</a>
+        <a th:href="@{/product}">Product</a>
+        <a th:href="@{/cart}">Giỏ hàng</a>
+    </nav>
+    <div th:if="${username == null}" class="user-menu">
+        <a th:href="@{/login}">Login</a>
+    </div>
+    <div th:if="${username != null}" class="user-menu">
+        <button class="user-btn">Hi, <span th:text="${username}"></span></button>
+        <div class="dropdown-content">
+            <a th:href="@{/profile}">Profile</a>
+            <a href="/orders">My Orders</a>
+        </div>
+    </div>
+</header>
+
+<!-- KHỐI NỘI DUNG CHÍNH TRANG ĐẶT MUA VÀ THANH TOÁN -->
+<main class="container" style="padding-top: 100px;">
+
+    <div class="payment-wrapper">
+        <h2 class="payment-title">Quét mã để hoàn tất</h2>
+        <span class="payment-subtitle">Meko Secure Checkout</span>
+
+        <!-- Khung tranh chứa mã QR ký vật -->
+        <div class="qr-gallery-frame">
+            <img th:src="@{/asset/1782982195409_5133846304349805381_g5346390462366079816_d89798199fd661b144183ab9a8eb378b.jpg}"
+                 class="qr-image"
+                 alt="Meko QR Code Payment">
+        </div>
+
+        <!-- Khu vực hiển thị giá trị tiền tệ -->
+        <div class="amount-display-box">
+            <span class="amount-label">Giá trị giao dịch</span>
+            <div class="premium-price">
+                <!-- Giữ nguyên biến order.total và định dạng khoảng cách VNĐ -->
+                <span th:text="${order != null ? #numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT') : '0'}"></span><span class="currency">VNĐ</span>
+            </div>
+        </div>
+
+        <!-- Thanh thông báo đếm ngược tinh chỉnh tối giản -->
+        <div class="status-countdown-box">
+            <span class="loading-dot"></span>
+            <span>Hệ thống đang xác thực tự động trong</span>
+            <span id="countdown" class="countdown-number">3</span>
+            <span>giây</span>
+        </div>
+    </div>
+
+</main>
+
+<!-- EDITORIAL MINIMAL FOOTER -->
+<footer>
+    <h3>MEKO</h3>
+    <p>Digital Storytelling & Cultural Souvenir — Authentic Mekong Design</p>
+</footer>
+
+<!-- XỬ LÝ LOGIC CHUYỂN HƯỚNG VÀ BẢO MẬT CSRF TOKEN -->
+<script th:inline="javascript">
+    // Lấy số giây đếm ngược ban đầu
+    let seconds = 3;
+    const countdownElement = document.getElementById("countdown");
+
+    // Lấy ID đơn hàng an toàn từ Thymeleaf
+    const orderId = /*[[${order != null ? order.id : 0}]]*/ 0;
+
+    // Đọc mã token CSRF bảo mật để gửi cùng phương thức POST qua Fetch API
+    const csrfToken = /*[[${_csrf != null ? _csrf.token : ''}]]*/ '';
+    const csrfHeader = /*[[${_csrf != null ? _csrf.headerName : 'X-CSRF-TOKEN'}]]*/ 'X-CSRF-TOKEN';
+
+    const timer = setInterval(() => {
+        seconds--;
+        countdownElement.innerText = seconds;
+
+        if (seconds <= 0) {
+            clearInterval(timer);
+
+            // Khởi tạo các headers bao gồm token bảo mật của hệ thống Spring Security
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            if(csrfToken) {
+                headers[csrfHeader] = csrfToken;
+            }
+
+            // Tiến hành kích hoạt kiểm tra thành công ngầm xuống Backend
+            fetch('/payment/success/' + orderId, {
+                method: 'POST',
+                headers: headers
+            })
+                .then(() => {
+                    // Điều hướng sang trang thông báo đặt hàng thành công hoàn mỹ
+                    window.location.href = '/order-success';
+                })
+                .catch(err => {
+                    console.error("Lỗi xác thực thanh toán: ", err);
+                    window.location.href = '/order-success';
+                });
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>

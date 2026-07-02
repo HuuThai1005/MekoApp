@@ -1,206 +1,133 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <title>MEKO Collection - Tinh Hoa Quà Tặng Mekong</title>
+    <!-- Google Fonts Luxury -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- File CSS dùng chung đồng bộ hệ thống -->
+    <link rel="stylesheet" th:href="@{/css/home.css}">
 
-  <meta charset="UTF-8">
-
-  <title>Product</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <link rel="stylesheet" th:href="@{/css/home.css}">
-    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
-    <link rel="stylesheet" th:href="@{/css/voucher.css}">
-
-
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap"
-        rel="stylesheet">
 
 </head>
-
 <body>
 
+<!-- FIXED NAVBAR (ĐỒNG BỘ TOÀN HỆ THỐNG) -->
 <header class="navbar">
-
-  <div class="logo">
-    MEKO
-  </div>
-
+    <div class="logo">MEKO</div>
     <nav>
         <a th:href="@{/}">Trang chủ</a>
-        <a href="#">Khám phá</a>
-        <a href="#">Câu chuyện</a>
         <a th:href="@{/voucher}">Voucher</a>
         <a th:href="@{/category}">Cate</a>
         <a th:href="@{/product}">Product</a>
+        <a th:href="@{/cart}">Giỏ hàng</a>
     </nav>
-  <div class="user-menu">
-
-    <button class="user-btn">
-      Hi, <span th:text="${username}"></span>
-    </button>
-
-    <div class="dropdown-content">
-
-      <a th:href="@{/profile}">Profile</a>
-
-      <a href="/orders">My Orders</a>
-
-      <form action="/logout" method="post">
-        <button type="submit" class="logout-btn">
-          Logout
-        </button>
-
-        <input type="hidden"
-               th:name="${_csrf.parameterName}"
-               th:value="${_csrf.token}">
-      </form>
-
+    <div th:if="${username == null}" class="user-menu">
+        <a th:href="@{/login}">Login</a>
     </div>
-
-  </div>
-
-</header>
-<section>
-    <h2 class="page-header">Danh sách sản phẩm</h2>
-    <div class="action-bar">
-        <a th:href="@{/product/create-product}" class="btn-add">
-            + Tạo thêm Sản Phẩm
-        </a>
-    </div>
-
-    <div class="product-grid">
-
-        <div class="product-card"
-             th:each="product : ${products}">
-
-            <img th:src="${product.imageUrl}"
-                 alt="product">
-
-            <div class="product-content">
-
-                <h3 th:text="${product.productName}"></h3>
-
-                <p th:text="${product.description}"></p>
-
-                <p>
-                    Giá:
-                    <strong th:text="${product.price} + ' VNĐ'"></strong>
-                </p>
-
-                <p>
-                    Danh mục:
-                    <span th:text="${product.category.categoryName}"></span>
-                </p>
-
-                <button class="btn-buy">
-                    Thêm vào giỏ hàng
-                </button>
-                <a th:href="@{/product/edit/{id}(id=${product.id})}"
-                   class="btn-edit">
-                    ✏
-                </a>
-                <a href="#"
-                   class="btn-delete"
-                   th:attr="data-url=@{/product/delete/{id}(id=${product.id})}"
-                   onclick="openDeleteModal(this)">
-
-                    🗑
-
-                </a>
-
-            </div>
-
+    <div th:if="${username != null}" class="user-menu">
+        <button class="user-btn">Hi, <span th:text="${username}"></span></button>
+        <div class="dropdown-content">
+            <a th:href="@{/profile}">Profile</a>
+            <a href="/orders">My Orders</a>
+            <form action="/logout" method="post">
+                <button type="submit" class="logout-btn">Logout</button>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            </form>
         </div>
+    </div>
+</header>
 
+<!-- BANNER ĐẦU TRANG THEO PHONG CÁCH TẠP CHÍ -->
+<section class="container" style="padding-top: 60px; padding-bottom: 0;">
+    <div class="section-title" style="margin-bottom: 20px;">
+        <span>Meko Souvenir Shop</span>
+        <h2>Tác Phẩm Lưu Niệm Kỷ Vật</h2>
     </div>
 </section>
 
-<!-- Delete Modal -->
-<div id="deleteModal" class="modal-overlay">
+<!-- BỐ CỤC CHÍNH CỦA TRANG CỬA HÀNG -->
+<main class="shop-container">
 
-    <div class="modal-box">
-
-        <div class="modal-icon">
-            ⚠️
+    <!-- SIDEBAR BỘ LỌC (BÊN TRÁI) -->
+    <aside class="shop-sidebar">
+        <div class="filter-group">
+            <div class="filter-title">Danh Mục</div>
+            <div class="filter-links">
+                <a href="/customer/products" class="active">Tất cả sản phẩm</a>
+                <!-- Lặp danh mục động từ database nếu bạn truyền list categories vào model -->
+                <a th:each="cat : ${cates}" th:href="@{/customer/products(categoryId=${cat.id})}" th:text="${cat.categoryName}"></a>
+            </div>
         </div>
 
-        <h3>Xác nhận xóa</h3>
+        <div class="filter-group">
+            <div class="filter-title">Dòng Văn Hóa</div>
+            <div class="filter-links">
+                <a href="#">Văn hóa Kinh</a>
+                <a href="#">Văn hóa Khmer</a>
+                <a href="#">Văn hóa Hoa</a>
+                <a href="#">Văn hóa Chăm</a>
+            </div>
+        </div>
+    </aside>
 
-        <p>
-            Bạn có chắc muốn xóa sản phẩm này không?
-        </p>
+    <!-- KHU VỰC DANH SÁCH SẢN PHẨM (BÊN PHẢI) -->
+    <div class="shop-content-area">
 
-        <div class="modal-actions">
+        <!-- THÀNH CÔNG CỤ TÌM KIẾM & BỘ LỌC SẮP XẾP -->
+        <div class="shop-toolbar">
+            <div class="search-box">
+                <form th:action="@{/customer/products}" method="get">
+                    <input type="text" name="keyword" placeholder="Tìm kiếm ký vật văn hóa...">
+                </form>
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
+                Hiển thị: <span th:text="${products.size()}"></span> sản phẩm
+            </div>
+        </div>
 
-            <button class="btn-cancel-modal"
-                    onclick="closeDeleteModal()">
+        <!-- LƯỚI SẢN PHẨM DÀNH CHO KHÁCH HÀNG -->
+        <div class="product-grid" style="margin-top: 0;">
+            <div class="customer-product-card" th:each="product : ${products}">
 
-                Hủy
+                <div class="product-image-wrapper">
+                    <!-- Tag văn hóa (Ví dụ mẫu, bạn có thể map động nếu trong DB có trường này) -->
+                    <span class="culture-badge">Mekong Craft</span>
 
-            </button>
+                    <img th:src="${product.imageUrl}" alt="Meko Product">
 
-            <a id="confirmDeleteBtn"
-               href="#"
-               class="btn-confirm-delete">
+                    <!-- Lớp phủ chứa nút Thêm vào giỏ hàng tinh gọn khi Hover -->
+                    <div class="product-action-overlay">
+                        <a th:href="@{/cart/add/{id}(id=${product.id})}"
+                           class="btn-add-cart">
 
-                Xóa
+                            🛒 Sở hữu ngay
 
-            </a>
+                        </a>
+                    </div>
+                </div>
 
+                <!-- Khối thông tin chi tiết của sản phẩm -->
+                <div class="product-info-block">
+                    <span class="category-tag" th:text="${product.category.categoryName}"></span>
+                    <h3 th:text="${product.productName}"></h3>
+                    <div class="price-tag" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></div>
+                </div>
+
+            </div>
         </div>
 
     </div>
+</main>
 
-</div>
-
+<!-- EDITORIAL MINIMAL FOOTER -->
 <footer>
-
-
-  <h3>MEKO</h3>
-
-  <p>
-    Digital Storytelling & Cultural Souvenir
-  </p>
-
+    <h3>MEKO</h3>
+    <p>Digital Storytelling & Cultural Souvenir — Authentic Mekong Design</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<script>
-
-    function openDeleteModal(button) {
-
-        const url = button.getAttribute("data-url");
-
-        document
-            .getElementById("confirmDeleteBtn")
-            .setAttribute("href", url);
-
-        document
-            .getElementById("deleteModal")
-            .classList.add("show");
-
-    }
-
-    function closeDeleteModal() {
-
-        document
-            .getElementById("deleteModal")
-            .classList.remove("show");
-
-    }
-
-    window.onclick = function(event) {
-
-        const modal =
-            document.getElementById("deleteModal");
-
-        if (event.target === modal) {
-
-            closeDeleteModal();
-
-        }
-
-    }
-
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </html>

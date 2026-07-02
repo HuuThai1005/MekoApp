@@ -1,146 +1,79 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
     <meta charset="UTF-8">
-    <title>MEKO</title>
-
-    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <title>MEKO Admin - Tạo Voucher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/dashboard.css}">
-    <link rel="stylesheet" th:href="@{/css/voucher.css}">
-
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap"
-          rel="stylesheet">
-
 </head>
-
 <body>
+<div class="admin-wrapper">
+    <aside class="admin-sidebar">
+        <div class="sidebar-logo">MEKO ADMIN</div>
+        <ul class="sidebar-menu">
+            <li><a th:href="@{/dashboard}">🏠 Thống Kê Chung</a></li>
+            <li><a th:href="@{/category}">📁 Quản Lý Danh Mục</a></li>
+            <li><a th:href="@{/dashboard/product}">🛍 Quản Lý Sản Phẩm</a></li>
+            <li><a th:href="@{/dashboard/voucher}">🎟 Quản Lý Vouchers</a></li>
+<!--            <li><a th:href="@{/profile}">👤 Tài Khoản</a></li>-->
+        </ul>
+    </aside>
+    <main class="admin-main">
+        <div class="admin-header">
+            <h2>Phát Hành Khuyến Mãi Mới</h2>
+            <a th:href="@{/dashboard/voucher}" class="btn-adm btn-adm-secondary">← Trở Lại</a>
+        </div>
+        <div class="admin-form-card">
+            <form th:action="@{/dashboard/voucher/create}" method="post">
+                <div class="form-grid-2">
+                    <div class="form-field">
+                        <label>Mã Cấu Hình Voucher</label>
+                        <input type="text" name="voucherCode" placeholder="Ví dụ: MEKOMOI2026" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Tên Chương Trình</label>
+                        <input type="text" name="voucherName" placeholder="Ví dụ: Giảm giá hè" required>
+                    </div>
+                </div>
 
-<section class="">
+                <div class="form-grid-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-field">
+                        <label>Loại Giảm Giá</label>
+                        <select name="discountType">
+                            <option value="PERCENT">Phần trăm (%)</option>
+                            <option value="FIXED">Tiền mặt (VNĐ)</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label>Giá Trị Giảm</label>
+                        <input type="number" name="value" placeholder="Ví dụ: 10 hoặc 50000" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Số Lượng Phát Hành</label>
+                        <input type="number" name="amount" placeholder="Số lượng phát hành..." required>
+                    </div>
+                </div>
 
-    <!-- Header -->
-    <div class="page-header">
+                <div class="form-grid-2">
+                    <div class="form-field">
+                        <label>Ngày Bắt Đầu hiệu lực</label>
+                        <input type="datetime-local" name="startDate" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Ngày Hết Hạn</label>
+                        <input type="datetime-local" name="endDate" required>
+                    </div>
+                </div>
 
-        <h2>Tạo Voucher</h2>
+                <input type="hidden" name="status" value="ACTIVE">
 
-        <a th:href="@{/voucher}"
-           class="btn-back">
-
-            ← Quay lại
-
-        </a>
-
-    </div>
-
-    <!-- Form -->
-    <div class="form-card">
-        <!-- gửi path voucher lên để controller hứng-->
-        <form th:action="@{/voucher/create}"
-              method="post">
-
-            <div class="form-group">
-
-                <label>Mã Voucher</label>
-
-                <input type="text"
-                       name="voucherCode"
-                       placeholder="Nhập mã voucher">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Tên Voucher</label>
-
-                <input type="text"
-                       name="voucherName"
-                       placeholder="Nhập tên voucher">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Loại giảm</label>
-
-                <select name="discountType">
-
-                    <option value="PERCENT">
-                        Phần trăm
-                    </option>
-
-                    <option value="FIXED">
-                        Tiền mặt
-                    </option>
-
-                </select>
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Giá trị</label>
-
-                <input type="number"
-                       name="value"
-                       placeholder="Nhập giá trị">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Số lượng</label>
-
-                <input type="number"
-                       name="amount"
-                       placeholder="Nhập số lượng">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Ngày bắt đầu</label>
-
-                <input type="datetime-local"
-                       name="startDate">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Ngày kết thúc</label>
-
-                <input type="datetime-local"
-                       name="endDate">
-
-            </div>
-
-            <input type="hidden"
-                   name="status"
-                   value="ACTIVE">
-
-            <div class="form-actions">
-
-                <a th:href="@{/dashboard/voucher}"
-                   class="btn-cancel">
-
-                    Hủy
-
-                </a>
-
-                <button type="submit"
-                        class="btn-save">
-
-                    Lưu Voucher
-
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</section>
-
+                <div class="btn-group-actions">
+                    <a th:href="@{/dashboard/voucher}" class="btn-adm btn-adm-secondary">Hủy bỏ</a>
+                    <button type="submit" class="btn-adm btn-adm-primary">Kích Hoạt Phát Hành</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
 </body>
 </html>

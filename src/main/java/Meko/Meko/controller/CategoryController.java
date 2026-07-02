@@ -18,7 +18,7 @@ public class CategoryController {
     @GetMapping
     public String findAdll(Model model) {
         model.addAttribute("cates", categoryService.findAll());
-        return "homepage/category";
+        return "dashboard/category_list";
     }
 
     @GetMapping("/create-cate")

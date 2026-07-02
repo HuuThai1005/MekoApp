@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MEKO Collection - Giỏ Hàng Ký Vật</title>
+    <!-- Google Fonts Luxury đồng bộ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- File CSS dùng chung hệ thống -->
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+
+</head>
+<body>
+
+<!-- FIXED NAVBAR ĐỒNG BỘ 100% -->
+<header class="navbar">
+    <div class="logo">MEKO</div>
+    <nav>
+        <a th:href="@{/}">Trang chủ</a>
+        <a th:href="@{/voucher}">Voucher</a>
+        <a th:href="@{/category}">Cate</a>
+        <a th:href="@{/product}">Product</a>
+        <a th:href="@{/cart}">Giỏ hàng</a>
+    </nav>
+    <div th:if="${username == null}" class="user-menu">
+        <a th:href="@{/login}">Login</a>
+    </div>
+    <div th:if="${username != null}" class="user-menu">
+        <button class="user-btn">Hi, <span th:text="${username}"></span></button>
+        <div class="dropdown-content">
+            <a th:href="@{/profile}">Profile</a>
+            <a href="/orders">My Orders</a>
+            <form action="/logout" method="post">
+                <button type="submit" class="logout-btn">Logout</button>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            </form>
+        </div>
+    </div>
+</header>
+
+<!-- BANNER ĐẦU TRANG -->
+<section class="container" style="padding-top: 80px; padding-bottom: 0;">
+    <div class="section-title" style="margin-bottom: 40px;">
+        <span>Meko Shopping Bag</span>
+        <h2>Giỏ hàng của tôi</h2>
+    </div>
+</section>
+
+<!-- BỐ CỤC CHÍNH CỦA TRANG GIỎ HÀNG -->
+<main class="cart-container">
+
+    <!-- TRƯỜNG HỢP 1: GIỎ HÀNG TRỐNG -->
+    <div class="empty-luxury-box" th:if="${#lists.isEmpty(cartItems)}">
+        <h3>Giỏ hàng hiện đang trống</h3>
+        <p style="color: var(--text-muted); margin-bottom: 3rem; font-size: 0.95rem;">Hãy lưu giữ những kỷ vật văn hóa đặc sắc từ Mekong.</p>
+        <a th:href="@{/product}" class="btn-premium-checkout" style="display: inline-block; width: auto; padding: 1.1rem 3rem;">Mua ngay!</a>
+    </div>
+
+    <!-- TRƯỜNG HỢP 2: CÓ SẢN PHẨM TRONG GIỎ -->
+    <th:block th:if="${not #lists.isEmpty(cartItems)}">
+
+        <!-- DANH SÁCH SẢN PHẨM PHÍA BÊN TRÁI -->
+        <div class="cart-main-content">
+            <table class="cart-table">
+                <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Tổng tiền</th>
+                    <th style="text-align: right;">Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${cartItems}">
+                    <td>
+                        <div class="cart-product-item">
+                            <img th:src="${item.product.imageUrl}" class="cart-item-img" alt="Meko Item">
+                            <div>
+                                <div class="cart-item-name" th:text="${item.product.productName}"></div>
+                                <span class="cart-item-cate" th:text="${item.product.category.categoryName}"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <!-- ĐẤ SỬA: Tách cụm con số và đơn vị VNĐ để tạo khoảng cách rộng ra -->
+                    <td class="premium-price">
+                        <span th:text="${#numbers.formatDecimal(item.unitPrice, 0, 'COMMA', 0, 'POINT')}"></span><span class="currency">VNĐ</span>
+                    </td>
+                    <td>
+                        <!-- Form điều khiển tăng giảm số lượng gửi POST về Controller -->
+                        <form th:action="@{/cart/update}"
+                              method="POST"
+                              class="quantity-modifier">
+
+                            <input type="hidden"
+                                   name="productId"
+                                   th:value="${item.product.id}">
+
+                            <input type="hidden"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}">
+
+                            <button type="submit"
+                                    name="action"
+                                    value="decrease"
+                                    class="qty-btn">
+
+                                -
+
+                            </button>
+
+                            <input type="text"
+                                   class="qty-input"
+                                   th:value="${item.quantity}"
+                                   readonly>
+
+                            <button type="submit"
+                                    name="action"
+                                    value="increase"
+                                    class="qty-btn">
+
+                                +
+
+                            </button>
+
+                        </form>
+                    </td>
+                    <!-- ĐÃ SỬA: Giãn cách tổng tiền của dòng sản phẩm -->
+                    <td class="premium-price accent-total">
+                        <span th:text="${#numbers.formatDecimal(item.unitPrice * item.quantity, 0, 'COMMA', 0, 'POINT')}"></span><span class="currency">VNĐ</span>
+                    </td>
+                    <td style="text-align: right;">
+                        <!-- ĐÃ SỬA: Chuyển thẻ gỡ bỏ sang dạng form POST ẩn để kích hoạt Spring Security / CSRF an toàn -->
+                        <form th:action="@{/cart/delete/{id}(id=${item.product.id})}"
+                              method="POST"
+                              style="display:inline;"
+                              onsubmit="return confirm('Gỡ tác phẩm này khỏi túi hàng của bạn?')">
+
+                            <input type="hidden"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}">
+
+                            <button type="submit"
+                                    class="btn-remove-item">
+
+                                Gỡ bỏ
+
+                            </button>
+
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SIDEBAR TỔNG KẾT HÓA ĐƠN STICKY PHÍA BÊN PHẢI -->
+        <aside class="summary-sidebar">
+            <div class="summary-title"><h2><b>Giá trị đơn hàng</b></h2></div>
+            <div class="summary-line">
+                <span>Tạm tính tổng</span>
+                <span class="premium-price">
+                    <span th:text="${#numbers.formatDecimal(#aggregates.sum(cartItems.![unitPrice * quantity]), 0, 'COMMA', 0, 'POINT')}"></span><span class="currency">VNĐ</span>
+                </span>
+            </div>
+            <div class="summary-line">
+                <span>Vận chuyển toàn quốc</span>
+                <span style="color: var(--accent); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px;">Complimentary</span>
+            </div>
+
+            <div class="summary-line grand-total">
+                <span>Tổng chi phí</span>
+                <span class="total-amount-box">
+                    <span th:text="${#numbers.formatDecimal(#aggregates.sum(cartItems.![product.price * quantity]), 0, 'COMMA', 0, 'POINT')}"></span><span class="premium-price"><span class="currency">VNĐ</span></span>
+                </span>
+            </div>
+
+            <a href="/checkout" class="btn-premium-checkout">Tiến hành đặt mua</a>
+            <a th:href="@{/product}" class="btn-continue" style="display: block; text-align: center; margin-top: 2rem; text-decoration: none; font-size: 0.85rem; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase;">
+                ← Tiếp tục khám phá
+            </a>
+        </aside>
+
+    </th:block>
+</main>
+
+<footer>
+    <h3>MEKO</h3>
+    <p>Digital Storytelling & Cultural Souvenir — Authentic Mekong Design</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

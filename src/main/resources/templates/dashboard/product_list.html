@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MEKO Admin - Kho Sản Phẩm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+<div class="admin-wrapper">
+
+    <!-- BANNER SIDEBAR QUẢN TRỊ -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-logo">MEKO ADMIN</div>
+        <ul class="sidebar-menu">
+            <li><a th:href="@{/dashboard}">🏠 Thống Kê Chung</a></li>
+            <li><a th:href="@{/category}">📁 Quản Lý Danh Mục</a></li>
+            <li><a th:href="@{/dashboard/product}">🛍 Quản Lý Sản Phẩm</a></li>
+            <li><a th:href="@{/dashboard/voucher}">🎟 Quản Lý Vouchers</a></li>
+<!--            <li><a th:href="@{/profile}">👤 Tài Khoản</a></li>-->
+        </ul>
+    </aside>
+
+    <!-- KHU VỰC HIỂN THỊ CHÍNH -->
+    <main class="admin-main">
+        <div class="admin-header">
+            <h2>Hệ Thống Quản Lý Sản Phẩm Văn Hóa</h2>
+            <div class="user-badge">Hi, <span th:text="${username}"></span></div>
+        </div>
+
+        <!-- NÚT THÊM MỚI SẢN PHẨM -->
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 1.5rem;">
+            <a th:href="@{/dashboard/product/create-product}" class="btn-adm btn-adm-primary">+ Tạo Sản Phẩm Mới</a>
+        </div>
+
+        <!-- BẢNG DỮ LIỆU ĐIỀU KHIỂN -->
+        <div class="table-container">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th style="width: 80px;">Hình Ảnh</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Danh Mục</th>
+                    <th>Giá Bán</th>
+                    <th>Tồn Kho</th>
+                    <th>Trạng Thái</th>
+                    <th style="text-align: right; width: 200px;">Hành Động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Lặp danh sách sản phẩm từ Controller gửi xuống -->
+                <tr th:each="product : ${products}">
+                    <td><img th:src="${product.imageUrl}" class="table-thumb" alt="Product Image"></td>
+                    <td>
+                        <div style="font-weight: 600; color: #031525;" th:text="${product.productName}"></div>
+                        <div style="font-size: 0.8rem; color: #64748b; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" th:text="${product.description}"></div>
+                    </td>
+                    <td th:text="${product.category.categoryName}" style="font-weight: 500;"></td>
+                    <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' đ'" style="font-weight: 600; color: #B35432;"></td>
+                    <td th:text="${product.stock}" style="font-weight: 600;"></td>
+                    <td>
+                        <span th:if="${product.status == 'active' || product.status == 'ACTIVE'}" class="badge-status status-active">Đang Bán</span>
+                        <span th:if="${product.status == 'unactive' || product.status == 'UNACTIVE'}" class="badge-status status-inactive">Dừng Bán</span>
+                    </td>
+                    <!-- CÁC NÚT SỬA VÀ XÓA DÀNH RIÊNG CHO ADMIN -->
+                    <td style="text-align: right;">
+                        <a th:href="@{/dashboard/product/edit/{id}(id=${product.id})}" class="btn-adm btn-adm-edit">✏ Sửa</a>
+                        <a href="#" class="btn-adm btn-adm-danger" th:attr="data-url=@{/dashboard/product/delete/{id}(id=${product.id})}" onclick="openDeleteModal(this)">🗑 Xóa</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<!-- MODAL ĐỘC LẬP XÁC NHẬN XÓA -->
+<div id="deleteModal" class="admin-modal-overlay">
+    <div class="admin-modal-card">
+        <div style="font-size: 2.5rem; margin-bottom: 1rem;">⚠️</div>
+        <h3 style="font-weight:700; margin-bottom: 0.5rem;">Xóa Sản Phẩm?</h3>
+        <p style="color: #64748b; margin-bottom: 1.5rem; font-size: 0.95rem;">Thao tác này không thể hoàn tác, sản phẩm sẽ bị xóa vĩnh viễn khỏi hệ thống.</p>
+        <div style="display: flex; justify-content: center; gap: 1rem;">
+            <button class="btn-adm btn-adm-secondary" onclick="closeDeleteModal()">Quay Lại</button>
+            <a id="confirmDeleteBtn" href="#" class="btn-adm btn-adm-primary" style="background-color: #ef4444;">Xóa Ngay</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDeleteModal(button) {
+        const url = button.getAttribute("data-url");
+        document.getElementById("confirmDeleteBtn").setAttribute("href", url);
+        document.getElementById("deleteModal").classList.add("show");
+    }
+    // Đóng modal khi bấm hủy
+    function closeDeleteModal() {
+        document.getElementById("deleteModal").classList.remove("show");
+    }
+</script>
+</body>
+</html>

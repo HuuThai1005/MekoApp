@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Success</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            background: #f5f5f5;
+        }
+
+        .popup{
+            width: 400px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+
+            position: fixed;
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            text-align: center;
+        }
+
+        .success-icon{
+            font-size: 60px;
+            color: green;
+        }
+
+        button{
+            margin-top: 20px;
+            padding: 12px 20px;
+            border: none;
+            background: black;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="popup">
+
+    <div class="success-icon">
+        ✔
+    </div>
+
+    <h2>Đặt hàng thành công</h2>
+
+    <p>
+        Cảm ơn bạn đã mua hàng tại MEKO
+    </p>
+
+    <button onclick="goHome()">
+        Về trang chủ
+    </button>
+
+</div>
+
+<script>
+
+    function goHome(){
+
+        window.location.href = "/";
+    }
+
+</script>
+
+</body>
+</html>

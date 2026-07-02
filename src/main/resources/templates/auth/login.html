@@ -1,47 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>MEKO - Đăng Nhập</title>
+    <!-- Google Fonts Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 
-    <link rel="stylesheet" href="/css/style.css">
+
 </head>
 <body>
 
-<div class="container">
+<div class="auth-card">
+    <div class="brand-logo">MEKO</div>
+    <div class="auth-subtitle">Cultural Souvenir</div>
 
-    <h2>Login</h2>
+    <h2>Đăng Nhập</h2>
 
     <form action="/login" method="post">
+        <div class="form-group">
+            <input type="text" name="username" placeholder="Tên đăng nhập" required>
+        </div>
 
-        <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                required>
+        <div class="form-group">
+            <input type="password" name="password" placeholder="Mật khẩu" required>
+        </div>
 
-        <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                required>
-        <input type="hidden"
-               th:name="${_csrf.parameterName}"
-               th:value="${_csrf.token}">
+        <!-- Giữ nguyên token CSRF của bạn -->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
-        <button type="submit">
-            Login
+        <button type="submit" class="btn-auth">
+            Đăng Nhập
         </button>
-
     </form>
 
-    <p>
-        Don't have account?
-        <a href="/register">
-            Register
-        </a>
+    <p class="auth-switch">
+        Chưa có tài khoản?
+        <a href="/register">Đăng ký ngay</a>
     </p>
-
 </div>
 
 </body>
