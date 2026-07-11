@@ -898,6 +898,42 @@ body {
     transition: var(--transition-smooth);
     z-index: 4;
 }
+
+/* Nổi nút “Sở hữu ngay” lên nhẹ cho đẹp */
+/* Nổi nút “Sở hữu ngay” lên nhẹ cho đẹp */
+.btn-add-cart {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+            0 0 0 6px #000,      /* nền đen mở rộng */
+            0 20px 40px rgba(0,0,0,.18);
+    background: #000;
+    color: #fff;
+    border: 1px solid #000;
+}
+
+.btn-add-cart:hover {
+    transform: translateY(-12px) scale(1.04);
+    box-shadow:
+            0 0 0 6px #000,      /* viền đen mở rộng ra ngoài */
+            0 26px 60px rgba(0,0,0,.25);
+    outline: 2px solid #fff;
+    outline-offset: 6px;
+    background: #111;
+    color: #fff;
+}
+
+/* Lớp phủ tương tác mượt mà khi rê chuột */
+.product-action-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(3, 21, 37, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition-smooth);
+    z-index: 4;
+}
 .customer-product-card:hover .product-image-wrapper img {
     transform: scale(1.06);
 }
