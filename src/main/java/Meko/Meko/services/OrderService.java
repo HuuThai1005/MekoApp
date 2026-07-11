@@ -80,39 +80,55 @@ public class OrderService {
 
             if(voucher != null
                     && voucher.getStatus().equals("ACTIVE")
+                    && voucher.getAmount() != null
                     && voucher.getAmount() > 0
-                    && voucher.getStartDate()
-                    .isAfter(LocalDateTime.now())) {
+                    && voucher.getStartDate() != null
+                    && !voucher.getStartDate().isAfter(LocalDateTime.now())
+                    && voucher.getEndDate() != null
+                    && !voucher.getEndDate().isBefore(LocalDateTime.now())) {
+
 
                 if(voucher.getDiscountType()
                         .equals("PERCENT")) {
 
+                    // value = % (vd: 10 => giảm 10%)
                     discount =
                             subtotal.multiply(
                                     voucher.getValue()
                                             .divide(
-                                                    BigDecimal.valueOf(100)
-                                            )
+                                                    BigDecimal.valueOf(100),
+                                                    6,
+                                                    java.math.RoundingMode.HALF_UP)
                             );
 
                 } else {
-
-                    discount =
-                            voucher.getValue();
+                    // FIXED: value = số tiền giảm
+                    discount = voucher.getValue();
                 }
 
-                voucher.setAmount(
-                        voucher.getAmount() - 1
-                );
+                // Tránh trừ discount âm hoặc null
+                if(discount != null && discount.compareTo(BigDecimal.ZERO) > 0) {
+                    voucher.setAmount(
+                            voucher.getAmount() - 1
+                    );
+                    voucherRepository.save(voucher);
+                } else {
+                    discount = BigDecimal.ZERO;
+                }
 
-                voucherRepository.save(voucher);
             }
         }
 
+        BigDecimal discountSafe = discount != null ? discount : BigDecimal.ZERO;
+        // Không cho tổng âm
         BigDecimal total =
                 subtotal
                         .add(shippingFee)
-                        .subtract(discount);
+                        .subtract(discountSafe);
+        if(total.compareTo(BigDecimal.ZERO) < 0) {
+            total = BigDecimal.ZERO;
+        }
+
 
         Orders order = new Orders();
 
@@ -123,7 +139,8 @@ public class OrderService {
 
         order.setSubtotal(subtotal);
         order.setShippingFee(shippingFee);
-        order.setDiscount(BigDecimal.ZERO);
+        order.setDiscount(discount);
+
         order.setTotal(total);
 
         order.setStatus("PENDING");

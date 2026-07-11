@@ -9,6 +9,8 @@ import Meko.Meko.repositories.OrderRepository;
 import Meko.Meko.services.CartService;
 import Meko.Meko.services.OrderService;
 import Meko.Meko.services.UserService;
+import Meko.Meko.entities.Voucher;
+import Meko.Meko.repositories.VoucherRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,23 +26,27 @@ public class CheckoutController {
     private UserService userService;
     private CartService cartService;
     private OrderRepository orderRepository;
+    private VoucherRepository voucherRepository;
 
     public CheckoutController(
             OrderService orderService,
             UserService userService,
-    CartService cartService,
-            OrderRepository orderRepository) {
+            CartService cartService,
+            OrderRepository orderRepository,
+            VoucherRepository voucherRepository) {
 
         this.orderService = orderService;
         this.userService = userService;
         this.cartService = cartService;
         this.orderRepository = orderRepository;
+        this.voucherRepository = voucherRepository;
     }
 
     @GetMapping
     public String checkoutPage(
             Model model,
-            Authentication authentication){
+            Authentication authentication,
+            @RequestParam(value = "voucherCode", required = false) String voucherCode){
 
         String username =
                 authentication.getName();
@@ -74,6 +80,51 @@ public class CheckoutController {
         }
 
         model.addAttribute("subtotal", subtotal);
+
+        // shipping fee cố định 30.000 như OrderService
+        BigDecimal shippingFee = BigDecimal.valueOf(30000);
+
+        // tính discount để UI hiển thị tổng chi phí có bao gồm voucher
+        BigDecimal discount = BigDecimal.ZERO;
+        if(voucherCode != null && !voucherCode.isEmpty()){
+            Voucher voucher = voucherRepository
+                    .findByVoucherCode(voucherCode)
+                    .orElse(null);
+
+            if(voucher != null
+                    && voucher.getStatus() != null
+                    && voucher.getStatus().equals("ACTIVE")
+                    && voucher.getAmount() != null
+                    && voucher.getAmount() > 0
+                    && voucher.getStartDate() != null
+                    && !voucher.getStartDate().isAfter(java.time.LocalDateTime.now())
+                    && voucher.getEndDate() != null
+                    && !voucher.getEndDate().isBefore(java.time.LocalDateTime.now())){
+
+                if(voucher.getDiscountType() != null && voucher.getDiscountType().equals("PERCENT")){
+                    discount = subtotal.multiply(
+                            voucher.getValue()
+                                    .divide(
+                                            BigDecimal.valueOf(100),
+                                            6,
+                                            java.math.RoundingMode.HALF_UP
+                                    )
+                    );
+                } else {
+                    discount = voucher.getValue();
+                }
+            }
+        }
+
+        BigDecimal total = subtotal.add(shippingFee).subtract(discount);
+        if(total.compareTo(BigDecimal.ZERO) < 0){
+            total = BigDecimal.ZERO;
+        }
+
+        model.addAttribute("voucherCode", voucherCode);
+        model.addAttribute("discount", discount);
+        model.addAttribute("shippingFee", shippingFee);
+        model.addAttribute("total", total);
 
         model.addAttribute(
                 "checkoutRequest",

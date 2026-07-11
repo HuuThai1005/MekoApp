@@ -52,11 +52,14 @@ public class SecurityConfig {
                                 "/js/**"
                         ).permitAll()
 
+                        .requestMatchers("/dashboard/**")
+                        .hasRole("ADMIN")
+
                         .requestMatchers("/admin/**")
                         .hasRole("ADMIN")
 
                         .anyRequest()
-                        .authenticated()
+                        .hasAnyRole("ADMIN", "CUSTOMER")
                 )
 
                 .formLogin(form -> form

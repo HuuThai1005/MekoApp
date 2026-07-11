@@ -34,9 +34,9 @@
                     </div>
                     <div class="form-field">
                         <label>Phân Loại Danh Mục</label>
-                        <select name="category">
-                            <option value="1">Móc khóa nghệ thuật</option>
-                            <option value="2">Magnet tủ lạnh lưu niệm</option>
+                        <select name="category.id" required>
+                            <option value="" disabled selected>-- Chọn danh mục --</option>
+                            <option th:each="cate : ${categories}" th:value="${cate.id}" th:text="${cate.categoryName}"></option>
                         </select>
                     </div>
                 </div>

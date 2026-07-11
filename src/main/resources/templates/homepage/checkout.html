@@ -100,15 +100,25 @@
 
             <div class="summary-line">
                 <span>Vận chuyển toàn quốc</span>
-                <span style="color: var(--accent); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px;">Complimentary</span>
+                <span style="color: var(--accent); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px;">30.000VND</span>
             </div>
 
             <div class="summary-line grand-total">
                 <span>Tổng chi phí</span>
                 <span class="total-amount-box">
-                    <span th:text="${cartItems != null ? #numbers.formatDecimal(#aggregates.sum(cartItems.![product.price * quantity]), 0, 'COMMA', 0, 'POINT') : '0'}"></span><span class="premium-price"><span class="currency">VNĐ</span></span>
+<span th:text="${total != null ? #numbers.formatDecimal(total, 0, 'COMMA', 0, 'POINT') : #numbers.formatDecimal((cartItems != null ? #aggregates.sum(cartItems.![product.price * quantity]) : 0) + 30000, 0, 'COMMA', 0, 'POINT')}"></span>
                 </span>
             </div>
+            <div class="voucher-apply" style="margin: 1rem 0;">
+                <h3>Voucher</h3>
+                <div style="display:flex; gap:0.5rem; align-items:center; margin-top:0.5rem;">
+                    <input id="voucherCodeInput" type="text" name="voucherCode" th:value="${voucherCode}" class="form-input" placeholder="Nhập mã voucher" style="flex:1; padding: 12px 0;">
+                    <button type="button" style="flex:0 0 auto; background: var(--accent); color: #fff; border: none; padding: 0.8rem 1.2rem; font-family: var(--font-sans); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: var(--transition-smooth);" onclick="window.location.href='/checkout?voucherCode='+encodeURIComponent(document.getElementById('voucherCodeInput').value)" >
+                        Áp dụng
+                    </button>
+                </div>
+            </div>
+
             <div class="payment-method">
 
                 <h3>Phương thức thanh toán</h3>
@@ -135,7 +145,7 @@
             </div>
 
             <!-- Nút bấm submit nằm gọn trong form, sẵn sàng kích hoạt lệnh lưu xuống database -->
-            <button type="submit" class="btn-premium-checkout">Xác nhận đặt hàng</button>
+            <button id="checkout-submit" type="submit" class="btn-premium-checkout">Xác nhận đặt hàng</button>
 
             <a th:href="@{/cart}" class="btn-continue" style="display: block; text-align: center; margin-top: 2rem; text-decoration: none; font-size: 0.85rem; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase;">
                 ← Quay lại giỏ hàng
@@ -152,5 +162,44 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    (function () {
+        const keys = {
+            receiverName: 'checkout_receiverName',
+            phone: 'checkout_phone',
+            shippingAddress: 'checkout_shippingAddress'
+        };
+
+        // restore
+        document.addEventListener('DOMContentLoaded', function () {
+            const receiver = document.querySelector('input[name="receiverName"]');
+            const phone = document.querySelector('input[name="phone"]');
+            const address = document.querySelector('input[name="shippingAddress"]');
+
+            if (receiver && localStorage.getItem(keys.receiverName) !== null) {
+                receiver.value = localStorage.getItem(keys.receiverName);
+            }
+            if (phone && localStorage.getItem(keys.phone) !== null) {
+                phone.value = localStorage.getItem(keys.phone);
+            }
+            if (address && localStorage.getItem(keys.shippingAddress) !== null) {
+                address.value = localStorage.getItem(keys.shippingAddress);
+            }
+        });
+
+        // persist on change
+        function bind(inputSelector, storageKey) {
+            const el = document.querySelector(inputSelector);
+            if (!el) return;
+            el.addEventListener('input', function () {
+                localStorage.setItem(storageKey, el.value);
+            });
+        }
+
+        bind('input[name="receiverName"]', keys.receiverName);
+        bind('input[name="phone"]', keys.phone);
+        bind('input[name="shippingAddress"]', keys.shippingAddress);
+    })();
+</script>
 </body>
 </html>

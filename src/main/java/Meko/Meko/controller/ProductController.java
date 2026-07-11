@@ -24,6 +24,8 @@ public class ProductController
     @GetMapping("/create-product")
     public String create (Model model){
         model.addAttribute("product",new Product());
+        // Lấy danh sách category mới nhất để hiển thị select (không hardcode)
+        model.addAttribute("categories", productService.findCategories());
         return "dashboard/product_create";
     }
     @PostMapping("/create")

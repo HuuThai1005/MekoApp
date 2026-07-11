@@ -10,9 +10,12 @@ import java.util.List;
 @Service
 public class ProductService {
     private ProductRepository productRepository;
+    private Meko.Meko.repositories.CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository,
+                          Meko.Meko.repositories.CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
     public List<Product> findAll(){
         List<Product> products = new ArrayList<>();
@@ -32,6 +35,12 @@ public class ProductService {
         return productRepository.findById(id).orElse(null);
 
     }
+
+    public List<Meko.Meko.entities.Category> findCategories() {
+        return categoryRepository.findAll();
+    }
+
+
 
 }
 
