@@ -21,7 +21,16 @@ public class ProductService {
         List<Product> products = new ArrayList<>();
         products = productRepository.findAll();
         return products;
+    }
 
+    // Search products by name (case-insensitive)
+    public List<Product> searchByName(String keyword){
+        return productRepository.findByProductNameContainingIgnoreCase(keyword);
+    }
+
+    // Search products by category and name (case-insensitive)
+    public List<Product> searchByCategoryAndName(Integer categoryId, String keyword){
+        return productRepository.findByCategoryIdAndProductNameContainingIgnoreCase(categoryId, keyword);
     }
     public Product save(Product product)
     {

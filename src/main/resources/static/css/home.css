@@ -1049,3 +1049,275 @@ body {
 .voucher-card:hover .voucher-left::after {
     background-image: radial-gradient(circle, transparent 4px, var(--accent) 4px);
 }
+
+/* ==========================================================================
+   ORDERS PAGE STYLING (LỊCH SỬ ĐƠN HÀNG)
+   ========================================================================== */
+.orders-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 24px 80px 24px;
+    min-height: 70vh;
+    font-family: var(--font-sans);
+}
+
+/* Empty State Styling */
+.empty-orders-box {
+    text-align: center;
+    background: var(--white);
+    padding: 5rem 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-premium);
+    border: 1px solid rgba(3, 21, 37, 0.04);
+    max-width: 600px;
+    margin: 40px auto;
+}
+.empty-orders-box .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+}
+.empty-orders-box h3 {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--primary);
+}
+.empty-orders-box p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+}
+.btn-shop-now {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--white);
+    text-decoration: none;
+    padding: 1rem 2.5rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: var(--transition-smooth);
+    border: 1px solid transparent;
+}
+.btn-shop-now:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(179, 84, 50, 0.25);
+}
+
+/* Orders List & Cards */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-top: 40px;
+}
+.order-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-premium);
+    border: 1px solid rgba(3, 21, 37, 0.04);
+    overflow: hidden;
+    transition: var(--transition-smooth);
+}
+.order-card:hover {
+    box-shadow: 0 30px 60px rgba(3, 21, 37, 0.06);
+    transform: translateY(-2px);
+}
+.order-card-header {
+    background: #F8FAFC;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #E2E8F0;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.order-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.order-id {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+.order-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Badges Styling */
+.order-badges {
+    display: flex;
+    gap: 0.5rem;
+}
+.status-badge, .payment-badge {
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Order Status Badges */
+.status-pending {
+    background-color: #FEF3C7;
+    color: #D97706;
+}
+.status-confirmed {
+    background-color: #DBEAFE;
+    color: #2563EB;
+}
+.status-shipped {
+    background-color: #E0F2FE;
+    color: #0284C7;
+}
+.status-delivered {
+    background-color: #D1FAE5;
+    color: #059669;
+}
+.status-cancelled {
+    background-color: #FEE2E2;
+    color: #DC2626;
+}
+
+/* Payment Status Badges */
+.status-unpaid {
+    background-color: #F3F4F6;
+    color: #4B5563;
+}
+.status-paid {
+    background-color: #D1FAE5;
+    color: #059669;
+}
+
+/* Order Info Grid */
+.order-info-grid {
+    padding: 2rem 2rem 1.5rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    border-bottom: 1px dashed #E2E8F0;
+}
+@media (max-width: 768px) {
+    .order-info-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+.info-column h4 {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    color: var(--primary);
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+}
+.info-column p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+    color: #475569;
+}
+.info-column p strong {
+    color: var(--primary);
+}
+
+/* Order Items Table */
+.order-items-container {
+    padding: 1rem 2rem;
+}
+.order-items-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.order-items-table th {
+    padding: 0.75rem 0;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    border-bottom: 1px solid #F1F5F9;
+    font-weight: 600;
+}
+.order-items-table td {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid #F8FAFC;
+    vertical-align: middle;
+}
+.order-product-info {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+.order-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #F1F5F9;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+.order-item-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--primary);
+}
+.order-item-price, .order-item-subtotal {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--primary);
+}
+.order-item-qty {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Order Summary Box */
+.order-summary-box {
+    background: #F8FAFC;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-end;
+    border-top: 1px solid #E2E8F0;
+}
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    width: 320px;
+    max-width: 100%;
+    font-size: 0.9rem;
+    color: #475569;
+}
+.discount-amount {
+    color: #DC2626;
+    font-weight: 500;
+}
+.total-row {
+    border-top: 1px solid #E2E8F0;
+    padding-top: 0.75rem;
+    margin-top: 0.25rem;
+    font-size: 1.05rem;
+    color: var(--primary);
+    font-weight: 600;
+}
+.grand-total {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    color: var(--accent);
+    font-weight: 700;
+}
+.currency-small {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 2px;
+    color: inherit;
+}

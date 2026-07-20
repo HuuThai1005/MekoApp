@@ -158,7 +158,7 @@ public class OrderService {
 
         }else if(request.getPaymentMethod().equals("BANKING")){
 
-            order.setPaymentStatus("PENDING");
+            order.setPaymentStatus("PAID");
         }
 
         List<OrderItems> orderItems =
@@ -196,5 +196,9 @@ public class OrderService {
 
         cartService.save(cart);
         return savedOrder.getId();
+    }
+
+    public List<Orders> findByUser(User user) {
+        return orderRepository.findByUserOrderByCreatedAtDesc(user);
     }
 }
